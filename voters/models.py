@@ -1,4 +1,3 @@
-from ipaddress import ip_address
 from django.db import models
 
 # Create your models here.
