@@ -1,4 +1,5 @@
 from django.db import models
+from utilities.models import *
 
 # Create your models here.
 class Voter(models.Model):
@@ -6,12 +7,10 @@ class Voter(models.Model):
     first_name = models.CharField(max_length=25)
     last_name = models.CharField(max_length=25, blank=True)
     email = models.CharField(max_length=30)
-    ip_address = models.CharField(max_length=15, blank=True)
-    mac_address = models.CharField(max_length=30, blank=True)
     valid_voters_card = models.BooleanField(default="False")
     residential_status = models.BooleanField(default="True")
-    resident_state_id = models.IntegerField(blank=True)
-    resident_lga_id = models.IntegerField(blank=True)
+    resident_state = models.ForeignKey(States,blank=True, null=True, on_delete=models.CASCADE)
+    resident_lga = models.ForeignKey(Lga, blank=True, null=True, on_delete=models.CASCADE)
 
 
     def __str__(self):

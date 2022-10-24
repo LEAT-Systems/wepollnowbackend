@@ -19,9 +19,9 @@ class PollCategory(models.Model):
 class Poll(models.Model):
     poll_category = models.ForeignKey(PollCategory, blank=False, on_delete=models.CASCADE)
     poll_date = models.DateTimeField(editable=False)
-    poll_state = models.ForeignKey(States,default= None, on_delete=models.CASCADE)
-    poll_senatorial_district = models.ForeignKey(Senatorial, default= None, on_delete=models.CASCADE)
-    poll_lga = models.ForeignKey(Lga, default= None, on_delete=models.CASCADE)
+    poll_state = models.ForeignKey(States,blank=True, null=True, on_delete=models.CASCADE)
+    poll_senatorial_district = models.ForeignKey(Senatorial, blank=True, null=True,  on_delete=models.CASCADE)
+    poll_lga = models.ForeignKey(Lga,blank=True, null=True,  on_delete=models.CASCADE)
 
 class PollOption(models.Model):
     poll_question_id = models.ForeignKey(PollCategory, blank=False, on_delete=models.CASCADE, related_name='categories')
