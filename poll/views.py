@@ -7,7 +7,6 @@ from poll.serializers import *
 
 # Create your views here.
 
-
 @api_view(['GET', 'POST'])
 def poll_category(request):
     if request.method == 'GET':
