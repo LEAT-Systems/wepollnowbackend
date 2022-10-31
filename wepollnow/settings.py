@@ -25,7 +25,8 @@ SECRET_KEY = 'fhjr-h%vk&1)!m@4hcaw4mzcy#@rpx1bwfy&jv1xmbki+frpt!eooaj'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['wepollnowbackend.azurewebsites.net/', '*']
+ALLOWED_HOSTS = ['*']
+
 
 
 # Application definition
