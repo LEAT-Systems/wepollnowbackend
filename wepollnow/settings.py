@@ -142,7 +142,7 @@ SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 SECURE_HSTS_PRELOAD = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
 
-CSRF_TRUSTED_ORIGINS = ['wepollnow.azurewebsites.net/']
+CSRF_TRUSTED_ORIGINS = ['http://wepollnow.azurewebsites.net/','https://wepollnow.azurewebsites.net/']
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
