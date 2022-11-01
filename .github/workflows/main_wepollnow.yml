@@ -60,4 +60,4 @@ jobs:
         with:
           app-name: 'wepollnow'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_9990057200024DFBAEF7C9F48CA649A6 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_FED816A3A7084C2CBC1E0F7768A665AD }}
