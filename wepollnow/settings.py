@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-h%vk&1)!m@4hcaw4mzcy#@rpx1bwfy&jv1xmbki+frpt!eooaj
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-
+CORS_ORIGIN_ALLOW_ALL = True
 
 
 # Application definition
@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders'
     'rest_framework',
     'voters',
     'utilities',
@@ -53,6 +54,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middlewear.CorsMiddleware'
 ]
 
 ROOT_URLCONF = 'wepollnow.urls'
