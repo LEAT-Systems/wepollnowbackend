@@ -7,6 +7,11 @@ from django.contrib.auth.models import Group, Permission
 from django.contrib.contenttypes.models import ContentType
 from rest_framework.generics import ListAPIView
 from rest_framework import status
+from .tokens import create_jwt_pair_for_user
+
+from django.contrib.auth import authenticate
+from rest_framework.request import Request
+
 
 
 
@@ -40,10 +45,35 @@ class RegisterView(APIView):
                 return Response({'Error': "Provide role for staff"}, status=status.HTTP_400_BAD_REQUEST)
         else:
             return Response({'Error': "Invalid Data Provided"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        
+class LoginView(APIView):
+    def post(self, request:Request):
+        email=request.data.get('email')
+        password = request.data.get('password')
+        
+        user = authenticate(email=email, password=password)
+        
+        if user is not None:
+            tokens = create_jwt_pair_for_user(user)
+            response = {
+                "message": "Login Successful",
+                "token": tokens
+            }
+            return Response(data=response, status=status.HTTP_200_OK)
 
-            
-            
-            
+        else:
+            return Response(data={"message": "Invalid email or password"}, status=status.HTTP_403_FORBIDDEN)
+        
+        
+    def get(self, request:Request):
+        content = {
+            "user":str(request.user),
+            "auth": str(request.auth)
+        }
+        
+        return Response(data=content, status=status.HTTP_200_OK)
+
             
         
 class RoleListView(ListAPIView):
