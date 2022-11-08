@@ -10,8 +10,8 @@ class Voter(models.Model):
     email = models.CharField(max_length=50)
     valid_voters_card = models.BooleanField(default="False")
     residential_status = models.BooleanField(default="True")
-    state_of_origin = models.ForeignKey(States,blank=True, null=True, on_delete=models.CASCADE)
-    resident_state = models.ForeignKey(States,blank=True, null=True, on_delete=models.CASCADE)
+    state_of_origin = models.ForeignKey(State,blank=True, null=True, on_delete=models.CASCADE)
+    resident_state = models.ForeignKey(State,blank=True, null=True, on_delete=models.CASCADE)
     resident_lga = models.ForeignKey(Lga, blank=True, null=True, on_delete=models.CASCADE)
     age_range = models.IntegerField()
     gender = models.IntegerField()
@@ -29,7 +29,8 @@ class Voter(models.Model):
 
 class Vote(models.Model):
     voter = models.ForeignKey(Voter, blank=False, null=False, on_delete=models.CASCADE)
-    poll_id = models.CharField(max_length=15)
+    candidate = models.OneToOneField(Candidate, blank=False, null=False, on_delete=models.CASCADE)
+    poll = models.ForeignKey(Poll, on_delete=models.CASCADE, blank=False, null=False)
     voted_at = models.DateTimeField()
 
     def __str__(self):
