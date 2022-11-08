@@ -7,7 +7,7 @@ class RegisterSerializer(serializers.Serializer):
     password = serializers.CharField()
     name = serializers.CharField()
     username = serializers.CharField()
-    phone_number = serializers.CharField()
+    phone_number = serializers.CharField(required=False)
     
 
 
