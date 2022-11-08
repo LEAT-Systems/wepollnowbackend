@@ -1,6 +1,6 @@
 from audioop import maxpp
 from django.db import models
-from utilities.models import *
+
 import uuid
 
 # Create your models here.
@@ -10,9 +10,9 @@ class Voter(models.Model):
     email = models.CharField(max_length=50)
     valid_voters_card = models.BooleanField(default="False")
     residential_status = models.BooleanField(default="True")
-    state_of_origin = models.ForeignKey(State,blank=True, null=True, on_delete=models.CASCADE)
-    resident_state = models.ForeignKey(State,blank=True, null=True, on_delete=models.CASCADE)
-    resident_lga = models.ForeignKey(Lga, blank=True, null=True, on_delete=models.CASCADE)
+    state_of_origin = models.ForeignKey("utilities.State",blank=True, null=True, on_delete=models.CASCADE, related_name= "stateOfOrigin")
+    resident_state = models.ForeignKey("utilities.State",blank=True, null=True, on_delete=models.CASCADE, related_name= "stateOfResidence")
+    resident_lga = models.ForeignKey("utilities.Lga", blank=True, null=True, on_delete=models.CASCADE, related_name= "lgaOfResidence")
     age_range = models.IntegerField()
     gender = models.IntegerField()
     marital_status = models.IntegerField()
@@ -29,8 +29,8 @@ class Voter(models.Model):
 
 class Vote(models.Model):
     voter = models.ForeignKey(Voter, blank=False, null=False, on_delete=models.CASCADE)
-    candidate = models.OneToOneField(Candidate, blank=False, null=False, on_delete=models.CASCADE)
-    poll = models.ForeignKey(Poll, on_delete=models.CASCADE, blank=False, null=False)
+    candidate = models.OneToOneField("utilities.Candidate", blank=False, null=False, on_delete=models.CASCADE)
+    poll = models.ForeignKey("poll.Poll", on_delete=models.CASCADE, blank=False, null=False)
     voted_at = models.DateTimeField()
 
     def __str__(self):

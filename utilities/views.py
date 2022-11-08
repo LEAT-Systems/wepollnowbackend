@@ -1,14 +1,14 @@
 from django.shortcuts import render
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from utilities.models import Lga, States
+from utilities.models import Lga, State
 from utilities.serializers import *
 
 # Create your views here.
 @api_view(['GET', 'POST'])
 def states(request):
     if request.method == 'GET':
-        state_data = States.objects.all()
+        state_data = State.objects.all()
         serialized_data = StateSerializer(state_data, many=True)
         return Response(serialized_data.data)
 
@@ -23,7 +23,7 @@ def states(request):
 
 @api_view(['GET', 'PUT', 'DELETE'])
 def states_by_id(request, pk):
-    state_data = States.objects.get(pk=pk)
+    state_data = State.objects.get(pk=pk)
     if request.method == 'GET':
         serialized_data = StateSerializer(state_data)
         return Response(serialized_data.data)

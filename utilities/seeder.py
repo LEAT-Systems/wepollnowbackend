@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from utilities.models import Lga, States
+from utilities.models import Lga, State
 from utilities.serializers import *
 
 # Create your views here.

@@ -33,7 +33,7 @@ class Party(models.Model):
 
 class Candidate(models.Model):
     name = models.CharField(max_length=40)
-    poll = models.ForeignKey(Poll, blank=False, on_delete=models.SET_NULL)
+    poll = models.ForeignKey(Poll, blank=True, null=True, on_delete=models.SET_NULL)
     state_id = models.ForeignKey(State, on_delete=models.CASCADE)
     
     def __str__(self):
