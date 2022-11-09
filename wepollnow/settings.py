@@ -47,9 +47,6 @@ INSTALLED_APPS = [
     'voters',
     'user',
     
-    
-    "phonenumber_field",
-    
 ]
 AUTH_USER_MODEL = "user.User"
 
