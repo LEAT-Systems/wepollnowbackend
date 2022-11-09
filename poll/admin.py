@@ -10,10 +10,4 @@ class PollCategoryAdmin(admin.ModelAdmin):
 class PollAdmin(admin.ModelAdmin):
     pass
 
-@admin.register(PollOption)
-class PollOptionAdmin(admin.ModelAdmin):
-    pass
 
-@admin.register(PollResult)
-class PollResultAdmin(admin.ModelAdmin):
-    pass

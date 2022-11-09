@@ -5,7 +5,7 @@ from utilities.models import *
 
 class StateSerializer(serializers.ModelSerializer):
     class Meta:
-        model = States
+        model = State
         fields = [
             'id',
             'name'
