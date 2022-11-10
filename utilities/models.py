@@ -33,8 +33,17 @@ class Party(models.Model):
 
 class Candidate(models.Model):
     name = models.CharField(max_length=40)
-    poll = models.ForeignKey(Poll, blank=True, null=True, on_delete=models.SET_NULL)
+    poll = models.ForeignKey(Poll, blank=False, on_delete=models.SET_NULL)
+    party = models.ForeignKey(Party, blank=False, on_delete=models.CASCADE)
     state_id = models.ForeignKey(State, on_delete=models.CASCADE)
+    
+    def __str__(self):
+        return self.name
+
+class Subscriber(models.Model):
+    name = models.CharField(max_length=30)
+    message = models.CharField(max_length=300)
+    email = models.CharField(max_length=40)
     
     def __str__(self):
         return self.name
