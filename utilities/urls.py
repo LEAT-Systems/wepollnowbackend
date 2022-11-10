@@ -12,5 +12,7 @@ urlpatterns = [
     path('lga/senatorial/<int:senatorial_id>', lga_by_senatorial),
     path('seed/lga', seed_lga),
     path('seed/states', seed_states),
-    path('seed/senatorial', seed_senatorial)
+    path('seed/senatorial', seed_senatorial),
+    path('seed/resetState', clearStates),
+    path('seed/resetLga', clearLga)
 ]
