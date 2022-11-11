@@ -14,5 +14,7 @@ urlpatterns = [
     path('seed/states', seed_states),
     path('seed/senatorial', seed_senatorial),
     path('seed/resetState', clearStates),
-    path('seed/resetLga', clearLga)
+    path('seed/resetLga', clearLga),
+    path('subscribe/', CreateSubscriber.as_view(), name="subscribe"),
+    path('subscriberlist/', ListSubscriber.as_view(), name="subscriberlist")
 ]

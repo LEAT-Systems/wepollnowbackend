@@ -5,7 +5,7 @@ import uuid
 
 # Create your models here.
 class Voter(models.Model):
-    device_id = models.UUIDField(primary_key=True, default=uuid.uuid5, editable=False)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4)
     phone = models.CharField(max_length=30)
     email = models.CharField(max_length=50)
     valid_voters_card = models.BooleanField(default="False")
@@ -23,8 +23,9 @@ class Voter(models.Model):
     diaspora_voter = models.BooleanField(default="False")
 
 
+
     def __str__(self):
-        return self.contact
+        return self.phone
 
 
 class Vote(models.Model):
@@ -34,4 +35,4 @@ class Vote(models.Model):
     voted_at = models.DateTimeField()
 
     def __str__(self):
-        return self.contact
+        return self.voter

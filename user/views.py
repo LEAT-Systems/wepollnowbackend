@@ -12,12 +12,13 @@ from .tokens import create_jwt_pair_for_user
 from django.contrib.auth import authenticate
 from rest_framework.request import Request
 
-
-
+from .permissions import IsAdmin, IsSuperAdmin
+from rest_framework.permissions import IsAuthenticated
 
 
 class RegisterView(APIView):
     serializer_class= RegisterSerializer
+    permission_classes = [IsAuthenticated, IsSuperAdmin]
     
     def post(self, request):
         admin_group, created = Group.objects.get_or_create(name="AdminUser")

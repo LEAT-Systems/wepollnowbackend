@@ -3,6 +3,8 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from utilities.models import Lga, State
 from utilities.serializers import *
+from rest_framework.generics import ListAPIView, CreateAPIView
+from user.permissions import IsAdmin, IsSuperAdmin
 
 # Create your views here.
 @api_view(['GET', 'POST'])
@@ -91,3 +93,16 @@ def senatorial_by_state(request, state_id):
         data = Senatorial.objects.all().filter(state_id = state_id)
         serialized_data = SenatorialSerializer(data, many='True')
         return Response(serialized_data.data)
+    
+    
+class CreateSubscriber(CreateAPIView):
+    serializer_class = SubscriberSerializer
+    queryset = Subscriber.objects.all()
+    
+class ListSubscriber(ListAPIView):
+    serializer_class = SubscriberSerializer
+    queryset = Subscriber.objects.all()
+    permission_classes = [IsAdmin]
+    
+    
+    
