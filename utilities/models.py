@@ -36,6 +36,8 @@ class Candidate(models.Model):
     poll = models.ForeignKey(Poll, blank=False,  null=True, on_delete=models.SET_NULL)
     party = models.ForeignKey(Party, blank=False, on_delete=models.CASCADE)
     state_id = models.ForeignKey(State, on_delete=models.CASCADE)
+    main_candidate = models.BooleanField(default=False)
+    candidate_picture = models.ImageField(upload_to="candidate_pics", default="Account-user.png")
     
     def __str__(self):
         return self.name
