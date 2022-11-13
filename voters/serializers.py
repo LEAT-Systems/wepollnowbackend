@@ -17,6 +17,7 @@ class LgaSerializer(serializers.ModelSerializer):
 
 
 class VoterSerializer(serializers.ModelSerializer):
+    email = serializers.EmailField()
     state_of_origin_id = serializers.IntegerField(write_only=True)
     state_of_origin =StateSerializer(read_only=True)
     
@@ -30,3 +31,4 @@ class VoterSerializer(serializers.ModelSerializer):
         model = Voter
        
         fields = "__all__"
+
