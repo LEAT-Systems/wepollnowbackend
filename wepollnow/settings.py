@@ -13,7 +13,6 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 from pathlib import Path
 from datetime import timedelta
 
-from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -47,9 +46,6 @@ INSTALLED_APPS = [
     'poll',
     'voters',
     'user',
-    
-    #third party apps
-    'cloudinary_storage',
     
 ]
 AUTH_USER_MODEL = "user.User"
@@ -151,8 +147,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = 'static/'
-MEDIA_URL = '/media/'
-DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
 
 # security.W016
 CSRF_COOKIE_SECURE = True
@@ -177,10 +171,3 @@ CSRF_TRUSTED_ORIGINS = ['http://wepollnow.azurewebsites.net/','https://wepollnow
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-
-CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': config("CLOUDINARY_CLOUD_NAME"),
-    'API_KEY' : config("CLOUDINARY_API_KEY"),
-    'API_SECRET' : config("CLOUDINARY_API_SECRET")
-}
