@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/4.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
-
+import os
 from pathlib import Path
 from datetime import timedelta
 
@@ -49,7 +49,7 @@ INSTALLED_APPS = [
     'user',
     
     #third party apps
-    'cloudinary_storage',
+    #'cloudinary_storage',
     
 ]
 AUTH_USER_MODEL = "user.User"
@@ -152,7 +152,9 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 MEDIA_URL = '/media/'
-DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+#DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
 
 # security.W016
 CSRF_COOKIE_SECURE = True
@@ -179,8 +181,8 @@ CSRF_TRUSTED_ORIGINS = ['http://wepollnow.azurewebsites.net/','https://wepollnow
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': config("CLOUDINARY_CLOUD_NAME"),
-    'API_KEY' : config("CLOUDINARY_API_KEY"),
-    'API_SECRET' : config("CLOUDINARY_API_SECRET")
-}
+# CLOUDINARY_STORAGE = {
+#     'CLOUD_NAME': config("CLOUDINARY_CLOUD_NAME"),
+#     'API_KEY' : config("CLOUDINARY_API_KEY"),
+#     'API_SECRET' : config("CLOUDINARY_API_SECRET")
+# }
