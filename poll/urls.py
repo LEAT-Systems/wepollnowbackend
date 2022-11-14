@@ -3,6 +3,5 @@ from poll.views import *
 from django.urls import path
 
 urlpatterns = [
-    path('', poll),
-    path('get_categories', poll_category)
+    path('poll_categories/', getPollsForVoter.as_view(), name="poll_categories")
 ]
