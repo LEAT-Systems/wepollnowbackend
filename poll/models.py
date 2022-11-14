@@ -19,16 +19,19 @@ class PollCategory(models.Model):
 
 class Poll(models.Model):
     poll_category = models.ForeignKey(PollCategory, blank=False, on_delete=models.CASCADE)
+    poll_name = models.CharField(max_length=30, default="Presidential Election")
     poll_date = models.DateTimeField(auto_now_add='True')
-    poll_state = models.IntegerField()
-    poll_senatorial_district = models.IntegerField()
-    poll_lga = models.IntegerField()
+    poll_state = models.IntegerField(blank=True, null=True)
+    poll_senatorial_district = models.IntegerField(blank=True, null=True)
+    poll_lga = models.IntegerField(blank=True, null=True)
     poll_startDate = models.DateTimeField(default=timezone.now)
     poll_endDate = models.DateTimeField(default=timezone.now)
+    party = models.ManyToManyField('utilities.Party')
+    status = models.IntegerField(default=1)
     
 
     def __str__(self):
-        return self.poll_category.title
+        return self.poll_name
     
     def clean(self):
         super().clean()
