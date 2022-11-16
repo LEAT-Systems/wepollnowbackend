@@ -32,9 +32,9 @@ class Party(models.Model):
 
 class Candidate(models.Model):
     name = models.CharField(max_length=40)
-    poll = models.ForeignKey(Poll, blank=False,  null=True, on_delete=models.SET_NULL)
-    party = models.ForeignKey(Party, blank=False, on_delete=models.CASCADE)
-    state_id = models.ForeignKey(State, on_delete=models.CASCADE)
+    poll = models.ForeignKey(Poll, blank=False,  null=True, on_delete=models.SET_NULL, related_name="poll_candidate")
+    party = models.ForeignKey(Party, blank=False, on_delete=models.CASCADE, related_name="party_candidate")
+    state_id = models.ForeignKey(State, on_delete=models.CASCADE, related_name="state_candidate")
     main_candidate = models.BooleanField(default=False)
     candidate_picture = models.ImageField(upload_to="candidate_pics", default="Account-user.png")
     

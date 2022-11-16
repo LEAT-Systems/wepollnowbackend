@@ -26,7 +26,7 @@ class Poll(models.Model):
     poll_lga = models.IntegerField(blank=True, null=True)
     poll_startDate = models.DateTimeField(default=timezone.now)
     poll_endDate = models.DateTimeField(default=timezone.now)
-    party = models.ManyToManyField('utilities.Party')
+    party = models.ManyToManyField('utilities.Party', related_name="poll_parties")
     status = models.IntegerField(default=1)
     
 
