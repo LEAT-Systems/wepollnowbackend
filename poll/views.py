@@ -38,13 +38,12 @@ class GetPollCategory(ListAPIView):
     
     def get_serializer_context(self):
         context = super().get_serializer_context()
-        context['poll_id'] = self.request.data['poll_id']   
+        context['poll_id'] = self.request.data['poll_id']  
         return context
     
     def get_queryset(self):
         poll_id =  self.request.data['poll_id']
         pollParties = Party.objects.filter(poll_parties__id=poll_id)
-        print(pollParties)
         return pollParties
         
         
