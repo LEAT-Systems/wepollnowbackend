@@ -103,7 +103,6 @@ class PollPartySerializer(serializers.ModelSerializer):
     def get_partyCandidate(self, obj):
         poll_id = self.context["poll_id"]
         candidate = CandidateSerializer(obj.party_candidate.filter(poll__id=poll_id), many=True).data
-        print(candidate[0])
         return candidate
         
         
