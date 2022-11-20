@@ -113,14 +113,27 @@ def candidates(request):
 # def update_candidate_party(request,id,poll_id ):
 #     data = Candidate.objects.filter(id = id)
     
-class CreateSubscriber(CreateAPIView):
-    serializer_class = SubscriberSerializer
-    queryset = Subscriber.objects.all()
+class CreateContact(CreateAPIView):
+    serializer_class = ContactSerializer
+    queryset = Contact.objects.all()
     
-class ListSubscriber(ListAPIView):
-    serializer_class = SubscriberSerializer
-    queryset = Subscriber.objects.all()
-    permission_classes = [IsAdmin]
+class ListContact(ListAPIView):
+    serializer_class = ContactSerializer
+    queryset = Contact.objects.all()
+    #permission_classes = [IsAdmin]
     
     
-    
+@api_view(['GET', 'POST'])
+def subscriber(request):
+    if request.method == 'POST':
+        serialized_data = SubscriberSerializer(data=request.data)
+        if serialized_data.is_valid():
+            serialized_data.save()
+            return Response(serialized_data.data)
+        else:
+            return Response(serialized_data.errors)
+
+    if request.method == 'GET':
+        data = Subscriber.objects.all()
+        serialized_data = SubscriberSerializer(data, many='True')
+        return Response(serialized_data.data)

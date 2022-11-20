@@ -45,10 +45,16 @@ class Candidate(models.Model):
         return self.name
 
 
-class Subscriber(models.Model):
+class Contact(models.Model):
     name = models.CharField(max_length=30)
     message = models.CharField(max_length=300)
     email = models.CharField(max_length=40)
     
     def __str__(self):
         return self.name
+
+class Subscriber(models.Model):
+    email = models.CharField(max_length=40)
+    
+    def __str__(self):
+        return self.email

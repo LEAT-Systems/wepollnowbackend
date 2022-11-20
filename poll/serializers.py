@@ -29,7 +29,6 @@ class PollSerializer(serializers.ModelSerializer):
             'poll_state',
             'poll_date',
             'poll_senatorial_district',
-            'poll_lga',
             'poll_startDate',
             'poll_endDate',
             'status'
