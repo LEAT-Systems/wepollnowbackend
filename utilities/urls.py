@@ -10,11 +10,16 @@ urlpatterns = [
     path('lga/', lga),
     path('lga/<int:state_id>', lga_by_state),
     path('lga/senatorial/<int:senatorial_id>', lga_by_senatorial),
+    
+    path('subscribe/', CreateSubscriber.as_view(), name="subscribe"),
+    path('subscriberlist/', ListSubscriber.as_view(), name="subscriberlist"),
+
+    path('candidates/', candidates),
+
+    #Seeders
     path('seed/lga', seed_lga),
     path('seed/states', seed_states),
     path('seed/senatorial', seed_senatorial),
     path('seed/resetState', clearStates),
     path('seed/resetLga', clearLga),
-    path('subscribe/', CreateSubscriber.as_view(), name="subscribe"),
-    path('subscriberlist/', ListSubscriber.as_view(), name="subscriberlist")
 ]

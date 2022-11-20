@@ -93,7 +93,25 @@ def senatorial_by_state(request, state_id):
         data = Senatorial.objects.all().filter(state_id = state_id)
         serialized_data = SenatorialSerializer(data, many='True')
         return Response(serialized_data.data)
-    
+
+@api_view(['GET', 'POST'])
+def candidates(request):
+    if request.method == 'POST':
+        serialized_data = CandidateSerializer(data=request.data)
+        if serialized_data.is_valid():
+            serialized_data.save()
+            return Response(serialized_data.data)
+        else:
+            return Response(serialized_data.errors)
+
+    if request.method == 'GET':
+        data = Candidate.objects.all()
+        serialized_data = CandidateSerializer(data, many='True')
+        return Response(serialized_data.data)
+
+# @api_view(['UPDATE'])
+# def update_candidate_party(request,id,poll_id ):
+#     data = Candidate.objects.filter(id = id)
     
 class CreateSubscriber(CreateAPIView):
     serializer_class = SubscriberSerializer
