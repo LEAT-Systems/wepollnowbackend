@@ -42,3 +42,18 @@ class SubscriberSerializer(serializers.ModelSerializer):
             'message',
             'email'
         ]
+
+class CandidateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Candidate
+        fields = [
+            'id',
+            'name',
+            'poll',
+            'poll_category',
+            'party',
+            'state_id',
+            'senatorial_id',
+            'main_candidate',
+            'candidate_picture'
+        ]
