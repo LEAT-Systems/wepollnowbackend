@@ -8,10 +8,8 @@ from django.core.exceptions import ValidationError
 # Create your models here.
 class PollCategory(models.Model):
     title = models.CharField(max_length=30)
-    poll_description = models.TextField(max_length=200)
     created_date = models.DateTimeField(auto_now_add='True')
     updated_date = models.DateTimeField(auto_now='True')
-
 
     def __str__(self):
         return self.title
@@ -36,3 +34,13 @@ class Poll(models.Model):
         super().clean()
         if not (timezone.now() <= self.poll_startDate <= self.poll_endDate):
             raise ValidationError('End date has to be greater than start date')
+
+
+class Votes(models.Model):
+    poll = models.ForeignKey(Poll, blank=False, null=False, on_delete=models.CASCADE, related_name='poll_votes')
+    voter = models.ForeignKey(Voter, blank=False, null=False, on_delete=models.CASCADE, related_name='voter_votes')
+    party = models.ForeignKey('utilities.Party', blank=False, null=False, on_delete=models.CASCADE, related_name='party_votes')
+    created_date = models.DateTimeField(auto_now_add='True')
+
+    def __str__(self):
+        return self.party.name

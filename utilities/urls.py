@@ -12,7 +12,7 @@ urlpatterns = [
     path('lga/senatorial/<int:senatorial_id>', lga_by_senatorial),
     
     path('contact/', CreateContact.as_view(), name="contact"),
-    path('contacts_list/', ListContact.as_view(), name="contacts_list"),
+    path('contact_list/', ListContact.as_view(), name="contacts_list"),
 
     path('subscriber/', subscriber),
 
