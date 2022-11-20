@@ -32,14 +32,25 @@ class LgaSerializer(serializers.ModelSerializer):
             'senatorial_id'
         ]
         
+class ContactSerializer(serializers.ModelSerializer):
+    email = serializers.EmailField()
+    
+    class Meta:
+        model = Contact
+        fields = [
+            'name',
+            'message',
+            'email'
+        ]
+
+
 class SubscriberSerializer(serializers.ModelSerializer):
     email = serializers.EmailField()
     
     class Meta:
         model = Subscriber
         fields = [
-            'name',
-            'message',
+            'id',
             'email'
         ]
 
@@ -57,3 +68,4 @@ class CandidateSerializer(serializers.ModelSerializer):
             'main_candidate',
             'candidate_picture'
         ]
+

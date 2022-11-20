@@ -11,8 +11,10 @@ urlpatterns = [
     path('lga/<int:state_id>', lga_by_state),
     path('lga/senatorial/<int:senatorial_id>', lga_by_senatorial),
     
-    path('subscribe/', CreateSubscriber.as_view(), name="subscribe"),
-    path('subscriberlist/', ListSubscriber.as_view(), name="subscriberlist"),
+    path('contact/', CreateContact.as_view(), name="contact"),
+    path('contacts_list/', ListContact.as_view(), name="contacts_list"),
+
+    path('subscriber/', subscriber),
 
     path('candidates/', candidates),
 
