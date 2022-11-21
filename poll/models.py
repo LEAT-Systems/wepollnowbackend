@@ -23,7 +23,6 @@ class Poll(models.Model):
     poll_date = models.DateTimeField(auto_now_add='True')
     poll_state = models.IntegerField(blank=True, null=True)
     poll_senatorial_district = models.IntegerField(blank=True, null=True)
-    poll_lga = models.IntegerField(blank=True, null=True)
     poll_startDate = models.DateTimeField(default=timezone.now)
     poll_endDate = models.DateTimeField(default=timezone.now)
     party = models.ManyToManyField('utilities.Party', related_name="poll_parties")

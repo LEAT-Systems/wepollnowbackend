@@ -4,10 +4,11 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from poll.models import *
 from poll.serializers import *
-from rest_framework.generics import ListAPIView, CreateAPIView
+from rest_framework.generics import ListAPIView, CreateAPIView, ListCreateAPIView
 from voters.models import Voter
 from django.db.models import Q
-from utilities.models import Lga, Party
+from utilities.models import Lga, Party, Candidate
+
    
         
 class GetPollsForVoter(ListAPIView):
@@ -46,5 +47,19 @@ class GetPollCategory(ListAPIView):
         pollParties = Party.objects.filter(poll_parties__id=poll_id)
         return pollParties
         
-        
+class PollCategoryList(ListAPIView):
+    serializer_class =PollCategorySerializer
+    queryset = PollCategory.objects.all()
+
+class Polls(CreateAPIView):
+    serializer_class = CreatePollSerializer
+    queryset = Poll.objects.all()
+
+class CandidatesList(ListAPIView):
+    serializer_class = CandidateSerializer
+    queryset = Candidate.objects.all()
+
+
+
+
         
