@@ -10,8 +10,7 @@ class PollCategorySerializer(serializers.ModelSerializer):
         model = PollCategory
         fields = [
             'id',
-            'title',
-            'poll_description',
+            'title'
            
         ]
 
