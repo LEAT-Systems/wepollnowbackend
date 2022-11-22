@@ -50,11 +50,6 @@ class VoterSerializer(serializers.ModelSerializer):
        
         fields = "__all__"
 
-    
-
-
-
-
 
 class VoteSerializer(serializers.ModelSerializer):
     voter_id = serializers.UUIDField(write_only=True)
@@ -74,11 +69,15 @@ class VoteSerializer(serializers.ModelSerializer):
     def validate(self, attrs):
         voter = Voter.objects.get(id=attrs['voter_id'])
         poll = Poll.objects.get(id=attrs['poll_id'])
-        votes = Votes.objects.filter(poll=poll, voter=voter).exists()
-        
-        if votes:
+       
+        votess = Votes.objects.filter(poll=poll, voter=voter).exists()
+        if votess:
             raise ValidationError("You have voted already for this poll")
+
         return super().validate(attrs)
 
 
 
+        
+
+        

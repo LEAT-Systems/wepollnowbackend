@@ -93,21 +93,17 @@ class CandidateSerializer(serializers.ModelSerializer):
         
 class PollPartySerializer(serializers.ModelSerializer):
     partyCandidate = serializers.SerializerMethodField(read_only=True)
-    count = serializers.SerializerMethodField(read_only=True)
     
     class Meta:
         model = Party
-        fields = ['id','name', 'partyCandidate', 'count']
+        fields = ['id','name', 'partyCandidate']
         
     def get_partyCandidate(self, obj):
         poll_id = self.context["poll_id"]
         candidate = CandidateSerializer(obj.party_candidate.filter(poll__id=poll_id), many=True).data
         return candidate
 
-    # def get_count(self,obj):
-    #     poll_id = self.context["poll_id"]
-    #     candidate_count = obj.party_candidate.filter(poll__id=poll_id).count()
-    #     return candidate_count
+    
         
 class CandidateSerializer(serializers.ModelSerializer):
     
@@ -137,6 +133,19 @@ class PollCategoryPartySerializer(serializers.ModelSerializer):
             candidate = CandidateSerializer(obj.party_candidate.filter(poll_category__id=pollcategory_id), many=True).data
       
         return candidate
+
+class PollPartyResultSerializer(serializers.ModelSerializer):
+    voteCount = serializers.SerializerMethodField(read_only=True)
+
+    class Meta:
+        model = Party
+        fields = "__all__"
+
+    def get_voteCount(self,obj):
+        poll_id = self.context["poll_id"]
+        vote_count = obj.party_votes.filter(poll__id=poll_id).count()
+        return vote_count
+
         
            
         

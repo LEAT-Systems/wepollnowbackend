@@ -10,6 +10,8 @@ from django.db.models import Q
 from utilities.models import Lga, Party, Candidate, State, Senatorial
 from rest_framework.views import APIView
 from rest_framework import status
+from django.db.models import Count
+
 
 
 
@@ -68,13 +70,14 @@ class GetPollPartiesAndCandidates(APIView):
         try :
             poll_id = self.request.data["poll_id"]
             pollParties = Party.objects.filter(poll_parties__id=poll_id)
+            print(pollParties)
             context = {
                 "poll_id" : poll_id
             }
             serializer = PollPartySerializer(pollParties, many=True, context = context)
             return Response(serializer.data)
         except (Exception):
-            return Response({"error": "Invalid Data"}, status=status.HTTP_400_BAD_REQUEST)           
+            return Response({"error": "Invalid Data" }, status=status.HTTP_400_BAD_REQUEST)           
 
 
 class GetPartiesAndCandidatesForPollCategory(APIView): 
@@ -112,7 +115,23 @@ class GetPartiesAndCandidatesForPollCategory(APIView):
         except (Exception):
             return Response({"error": "Invalid Data"}, status=status.HTTP_400_BAD_REQUEST) 
 
- 
+class PollResult(APIView):
+    serializer_class  = PollPartyResultSerializer
+
+    def post(self, request):
+        try :
+            poll_id = self.request.data["poll_id"]
+            pollParties = Party.objects.filter(poll_parties__id=poll_id).annotate(number_of_votes=Count('party_votes')).order_by('-number_of_votes')
+
+            context = {
+                "poll_id" : poll_id
+            }
+            serializer = self.serializer_class(pollParties, many=True, context = context)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except (Exception):
+            return Response({"error": "Invalid Data"}, status=status.HTTP_400_BAD_REQUEST)           
+
+    
 
 
 
