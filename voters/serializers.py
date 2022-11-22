@@ -1,7 +1,18 @@
 from rest_framework import serializers
 from voters.models import *
-from utilities.models import State, Lga
+from utilities.models import State, Lga, Party
+from poll.models import Votes, Poll
+from rest_framework.validators import ValidationError
+from rest_framework.response import Response
+from rest_framework import status
 
+
+
+class PartySerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Party
+        fields = "__all__"
 
 class StateSerializer(serializers.ModelSerializer):
     
@@ -13,6 +24,13 @@ class LgaSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Lga
+        fields = "__all__"
+
+
+class PollSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Poll
         fields = "__all__"
 
 
@@ -31,4 +49,36 @@ class VoterSerializer(serializers.ModelSerializer):
         model = Voter
        
         fields = "__all__"
+
+    
+
+
+
+
+
+class VoteSerializer(serializers.ModelSerializer):
+    voter_id = serializers.UUIDField(write_only=True)
+    voter =VoterSerializer(read_only=True)
+    
+    party_id = serializers.IntegerField(write_only=True)
+    party = PartySerializer(read_only=True)
+    
+    poll_id = serializers.IntegerField(write_only=True)
+    poll = PollSerializer(read_only=True)
+    
+    class Meta:
+        model = Votes
+       
+        fields = "__all__"
+
+    def validate(self, attrs):
+        voter = Voter.objects.get(id=attrs['voter_id'])
+        poll = Poll.objects.get(id=attrs['poll_id'])
+        votes = Votes.objects.filter(poll=poll, voter=voter).exists()
+        
+        if votes:
+            raise ValidationError("You have voted already for this poll")
+        return super().validate(attrs)
+
+
 
