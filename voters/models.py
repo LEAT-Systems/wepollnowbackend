@@ -29,11 +29,3 @@ class Voter(models.Model):
         return self.phone
 
 
-class Vote(models.Model):
-    voter = models.ForeignKey(Voter, blank=False, null=False, on_delete=models.CASCADE)
-    candidate = models.OneToOneField("utilities.Candidate", blank=False, null=False, on_delete=models.CASCADE)
-    poll = models.ForeignKey("poll.Poll", on_delete=models.CASCADE, blank=False, null=False)
-    voted_at = models.DateTimeField()
-
-    def __str__(self):
-        return self.voter

@@ -10,4 +10,5 @@ class PollCategoryAdmin(admin.ModelAdmin):
 class PollAdmin(admin.ModelAdmin):
     pass
 
+admin.site.register(Votes)
 

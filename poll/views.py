@@ -77,12 +77,12 @@ class GetPollPartiesAndCandidates(APIView):
             return Response({"error": "Invalid Data"}, status=status.HTTP_400_BAD_REQUEST)           
 
 
-class GetPartiesAndCandidatesForPollCategory(APIView):
+class GetPartiesAndCandidatesForPollCategory(APIView): 
     serializer_class  = PollCategoryPartySerializer
 
     def post(self, request):
         try:
-            pollcategory_id = self.request.data["pollcategory_id"]
+            pollcategory_id = self.request.data["pollcategory_id"] 
             poll_category = PollCategory.objects.get(id = pollcategory_id)
             context = { }
 
@@ -94,14 +94,15 @@ class GetPartiesAndCandidatesForPollCategory(APIView):
                 context["state_id"]=state_id
                 
                     
-            else:
+            elif self.request.data.get("senatorial_id"):
                 senatorial_id = self.request.data["senatorial_id"]
                 senatorial = Senatorial.objects.get(id=senatorial_id)
                 pollParties = Party.objects.filter(party_candidate__poll_category=poll_category, party_candidate__senatorial_id = senatorial).prefetch_related("party_candidate").distinct()        
 
                 context["senatorial_id"] = senatorial_id
-                
-                
+            
+            else :
+                pollParties = Party.objects.filter(party_candidate__poll_category=poll_category).distinct()        
 
             context['pollcategory_id'] = pollcategory_id
 
