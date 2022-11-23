@@ -9,7 +9,8 @@ urlpatterns = [
     path("create_poll/", Polls.as_view(), name="create_poll"),
     path("candidatesList/", CandidatesList.as_view(), name="candidatesList"),
     path("get_polls/", AllPollsList.as_view(), name="get_polls"),
-    path("poll_category_party/" , GetPartiesAndCandidatesForPollCategory.as_view(), name="poll_category_party")
+    path("poll_category_party/" , GetPartiesAndCandidatesForPollCategory.as_view(), name="poll_category_party"),
+    path("poll_result/", PollResult.as_view(), name="poll_result"),
     
 ]
 
