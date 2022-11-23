@@ -41,7 +41,6 @@ class Votes(models.Model):
     voter = models.ForeignKey(Voter, blank=False, null=False, on_delete=models.CASCADE, related_name='voter_votes')
     party = models.ForeignKey('utilities.Party', blank=False, null=False, on_delete=models.CASCADE, related_name='party_votes')
     created_date = models.DateTimeField(auto_now_add='True')
-    vote_count = models.IntegerField(default=0)
 
     def __str__(self):
         return self.party.name
