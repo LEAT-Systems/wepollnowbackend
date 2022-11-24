@@ -3,6 +3,7 @@ from utilities.seeder import *
 from django.urls import path
 
 urlpatterns = [
+    path('party_list/', PartyList.as_view(), name= "party_list"),
     path('states/', states),
     path('states/<int:pk>', states_by_id),
     path('senatorial/', senatorial),

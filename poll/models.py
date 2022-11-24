@@ -44,3 +44,11 @@ class Votes(models.Model):
 
     def __str__(self):
         return self.party.name
+
+class VoteCount (models.Model):
+    party = models.ForeignKey('utilities.Party', blank=False, null=False, on_delete=models.CASCADE, related_name='party_votes_count')
+    poll = models.ForeignKey(Poll, blank=False, null=False, on_delete=models.CASCADE, related_name='poll_votes_count')
+    vote_count = models.IntegerField(default=0)
+
+    def __str__(self):
+        return self.party.name

@@ -69,3 +69,9 @@ class CandidateSerializer(serializers.ModelSerializer):
             'candidate_picture'
         ]
 
+class PartySerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Party
+        fields = "__all__"
+

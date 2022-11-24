@@ -137,3 +137,7 @@ def subscriber(request):
         data = Subscriber.objects.all()
         serialized_data = SubscriberSerializer(data, many='True')
         return Response(serialized_data.data)
+
+class PartyList(ListAPIView):
+    serializer_class = PartySerializer
+    queryset = Party.objects.all()
