@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from voters.models import *
 from utilities.models import State, Lga, Party
-from poll.models import Votes, Poll
+from poll.models import Votes, Poll, VoteCount
 from rest_framework.validators import ValidationError
 from rest_framework.response import Response
 from rest_framework import status
@@ -69,10 +69,19 @@ class VoteSerializer(serializers.ModelSerializer):
     def validate(self, attrs):
         voter = Voter.objects.get(id=attrs['voter_id'])
         poll = Poll.objects.get(id=attrs['poll_id'])
+        party = Party.objects.get(id=attrs['party_id'])
+
        
         votess = Votes.objects.filter(poll=poll, voter=voter).exists()
         if votess:
             raise ValidationError("You have voted already for this poll")
+        else:
+            voteCount, created = VoteCount.objects.get_or_create(
+                poll=poll, party=party
+            )
+            voteCount.vote_count +=1
+            voteCount.save()
+
 
         return super().validate(attrs)
 

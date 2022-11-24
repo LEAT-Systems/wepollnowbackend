@@ -11,4 +11,4 @@ class PollAdmin(admin.ModelAdmin):
     pass
 
 admin.site.register(Votes)
-
+admin.site.register(VoteCount)
