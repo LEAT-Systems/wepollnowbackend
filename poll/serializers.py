@@ -153,8 +153,10 @@ class PollPartyResultSerializer(serializers.ModelSerializer):
 
     def get_voteCount(self,obj):
         poll_id = self.context["poll_id"]
-        vote_count = obj.party_votes.filter(poll__id=poll_id).count()
-        return vote_count
+        vote_count = obj.party_votes.filter(poll__id=poll_id)
+        #vote_count = vote_count.filter(voter__gender=2)
+        #vote_count = vote_count.filter(voter__marital_status=3)
+        return vote_count.count()
 
     def get_party_votes_count(self, obj):
         poll_id = self.context["poll_id"]
