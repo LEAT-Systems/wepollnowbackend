@@ -46,8 +46,10 @@ INSTALLED_APPS = [
     'poll',
     'voters',
     'user',
+    'blog',
     
     #third party apps
+    'django_filters',
     #'cloudinary_storage',
     
 ]

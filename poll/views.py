@@ -12,7 +12,7 @@ from rest_framework.views import APIView
 from rest_framework import status
 from django.db.models import Count
 
-
+from rest_framework.filters import OrderingFilter
 
 
 
@@ -67,17 +67,17 @@ class GetPollPartiesAndCandidates(APIView):
     serializer_class  = PollPartySerializer
 
     def post(self, request):
-        try :
-            poll_id = self.request.data["poll_id"]
-            pollParties = Party.objects.filter(poll_parties__id=poll_id)
-            print(pollParties)
-            context = {
-                "poll_id" : poll_id
-            }
-            serializer = PollPartySerializer(pollParties, many=True, context = context)
-            return Response(serializer.data)
-        except (Exception):
-            return Response({"error": "Invalid Data" }, status=status.HTTP_400_BAD_REQUEST)           
+    #try :
+        poll_id = self.request.data["poll_id"]
+        pollParties = Party.objects.filter(poll_parties__id=poll_id)
+        print(pollParties)
+        context = {
+            "poll_id" : poll_id
+        }
+        serializer = PollPartySerializer(pollParties, many=True, context = context)
+        return Response(serializer.data)
+    # except (Exception):
+    #     return Response({"error": "Invalid Data" }, status=status.HTTP_400_BAD_REQUEST)           
 
 
 class GetPartiesAndCandidatesForPollCategory(APIView): 
@@ -115,20 +115,44 @@ class GetPartiesAndCandidatesForPollCategory(APIView):
         except (Exception):
             return Response({"error": "Invalid Data"}, status=status.HTTP_400_BAD_REQUEST) 
 
-class PollResult(APIView):
-    serializer_class  = PollPartyResultSerializer
+# class PollResult(APIView):
+#     serializer_class  = PollPartyResultSerializer
 
-    def post(self, request):
+#     def post(self, request):
         
-        poll_id = self.request.data["poll_id"]
-        pollParties = Party.objects.filter(poll_parties__id=poll_id).annotate(number_of_votes=Count('party_votes')).order_by('-number_of_votes')
-        party = Party.objects.filter(id= 3, name="lpp")
-        print(party)
-        context = {
-            "poll_id" : poll_id
-        }
-        serializer = self.serializer_class(pollParties, many=True, context = context)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+#         poll_id = self.request.data["poll_id"]
+#         pollParties = Party.objects.filter(poll_parties__id=poll_id).annotate(number_of_votes=Count('party_votes')).order_by('number_of_votes')
+        
+
+       
+#         context = {
+#             "poll_id" : poll_id
+#         }
+#         serializer = self.serializer_class(pollParties, many=True, context = context)
+#         return Response(serializer.data, status=status.HTTP_200_OK)
+
+class PollResult(ListAPIView):
+    serializer_class  = PollPartyResultSerializer
+    filter_backends = [ OrderingFilter]
+    #filter_class = PartyVoteFilters
+    ordering_fields = ('name')
+    #ordering = ('name')
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context['poll_id'] = self.kwargs['poll_id']
+        return context
+
+    def get_queryset(self):
+        pollParties = Party.objects.filter(poll_parties__id=self.kwargs['poll_id']).prefetch_related('party_votes', 'party_votes_count').annotate(number_of_votes=Count('party_votes')).order_by('number_of_votes')
+        return pollParties
+
+
+
+          
+
+
+
+
                
 
     
