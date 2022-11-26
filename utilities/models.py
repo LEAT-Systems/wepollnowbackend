@@ -42,6 +42,7 @@ class Candidate(models.Model):
     main_candidate = models.BooleanField(default=True)
     candidate_picture = models.ImageField(upload_to="candidate_pics", default="Account-user.png")
     
+    
     def __str__(self):
         return self.name
 

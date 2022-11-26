@@ -1,6 +1,7 @@
 
 from rest_framework import serializers
 from utilities.models import *
+from poll.serializers import PollCategorySerializer
 
 
 
@@ -54,7 +55,29 @@ class SubscriberSerializer(serializers.ModelSerializer):
             'email'
         ]
 
-class CandidateSerializer(serializers.ModelSerializer):
+class PartySerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Party
+        fields = "__all__"
+
+class CandidateSerializer(serializers.ModelSerializer): 
+    poll_category_id = serializers.IntegerField(write_only=True)
+    poll_category = PollCategorySerializer(read_only=True)
+
+    party_id = serializers.IntegerField(write_only=True)
+    party = PartySerializer(read_only = True)
+
+    state_id_id = serializers.IntegerField(write_only=True, required=False)
+    state_id = StateSerializer(read_only=True)
+
+    senatorial_id_id = serializers.IntegerField(write_only=True, required=False)
+    senatorial_id = SenatorialSerializer(read_only=True)
+
+    main_candidate = serializers.BooleanField()
+
+
+
     class Meta:
         model = Candidate
         fields = [
@@ -62,16 +85,16 @@ class CandidateSerializer(serializers.ModelSerializer):
             'name',
             'poll',
             'poll_category',
+            'poll_category_id',
+            'party_id',
             'party',
+            'state_id_id',
             'state_id',
             'senatorial_id',
+            'senatorial_id_id',
             'main_candidate',
             'candidate_picture'
         ]
 
-class PartySerializer(serializers.ModelSerializer):
 
-    class Meta:
-        model = Party
-        fields = "__all__"
 
