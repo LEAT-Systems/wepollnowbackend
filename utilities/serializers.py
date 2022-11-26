@@ -4,7 +4,6 @@ from utilities.models import *
 from poll.serializers import PollCategorySerializer
 
 
-
 class StateSerializer(serializers.ModelSerializer):
     class Meta:
         model = State
@@ -98,7 +97,6 @@ class CandidateSerializer(serializers.ModelSerializer):
             'main_candidate',
             'candidate_picture'
         ]
-
 
 
 

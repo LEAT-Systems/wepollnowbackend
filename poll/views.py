@@ -13,6 +13,7 @@ from rest_framework import status
 from django.db.models import Count
 
 from rest_framework.filters import OrderingFilter
+from rest_framework.generics import GenericAPIView
 
 
 
@@ -115,36 +116,80 @@ class GetPartiesAndCandidatesForPollCategory(APIView):
         except (Exception):
             return Response({"error": "Invalid Data"}, status=status.HTTP_400_BAD_REQUEST) 
 
-# class PollResult(APIView):
-#     serializer_class  = PollPartyResultSerializer
+class PollResult(APIView):
+    serializer_class  = PollPartyResultSerializer
 
-#     def post(self, request):
+    def post(self, request):
         
-#         poll_id = self.request.data["poll_id"]
-#         pollParties = Party.objects.filter(poll_parties__id=poll_id).annotate(number_of_votes=Count('party_votes')).order_by('number_of_votes')
+        poll_id = self.request.data["poll_id"]
+        pollParties = Party.objects.filter(poll_parties__id=poll_id).prefetch_related('party_votes', 'party_votes_count').annotate(number_of_votes=Count('party_votes')).order_by('number_of_votes')
         
 
        
-#         context = {
-#             "poll_id" : poll_id
-#         }
-#         serializer = self.serializer_class(pollParties, many=True, context = context)
-#         return Response(serializer.data, status=status.HTTP_200_OK)
+        context = {
+            "poll_id" : poll_id
+        }
+        serializer = self.serializer_class(pollParties, many=True, context = context)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
-class PollResult(ListAPIView):
-    serializer_class  = PollPartyResultSerializer
+# class PollResult(ListAPIView):
+#     serializer_class  = PollPartyResultSerializer
+#     filter_backends = [ OrderingFilter]
+#     #filter_class = PartyVoteFilters
+#     ordering_fields = ('name')
+#     #ordering = ('name')
+#     def get_serializer_context(self):
+#         context = super().get_serializer_context()
+#         context['poll_id'] = self.kwargs['poll_id']
+#         return context
+
+#     def get_queryset(self):
+#         pollParties = Party.objects.filter(poll_parties__id=self.kwargs['poll_id']).prefetch_related('party_votes', 'party_votes_count').annotate(number_of_votes=Count('party_votes')).order_by('number_of_votes')
+#         return pollParties
+
+
+class PollResultFilter(GenericAPIView):
+    serializer_class  = PollPartyResultFilterSerializer
     filter_backends = [ OrderingFilter]
     #filter_class = PartyVoteFilters
-    ordering_fields = ('name')
-    #ordering = ('name')
-    def get_serializer_context(self):
-        context = super().get_serializer_context()
-        context['poll_id'] = self.kwargs['poll_id']
-        return context
+    #ordering_fields = ('name')
+    ordering = ('-id')
 
-    def get_queryset(self):
-        pollParties = Party.objects.filter(poll_parties__id=self.kwargs['poll_id']).prefetch_related('party_votes', 'party_votes_count').annotate(number_of_votes=Count('party_votes')).order_by('number_of_votes')
-        return pollParties
+    def post(self, request):
+        
+        poll_id = self.request.data.get('poll_id', None)
+        gender = self.request.data.get("gender", None)
+        firstTimeVOter = self.request.data.get("firstTimeVOter",None)
+        diaspora_voter = self.request.data.get("diaspora_voter", None)
+        residence_state = self.request.data.get("residence_state", None)
+        residence_lga= self.request.data.get("residence_lga", None)
+        state_of_origin = self.request.data.get("state_of_origin", None)
+        age_range = self.request.data.get("age_range", None)
+        religion = self.request.data.get("religion", None)
+        marital_status = self.request.data.get("marital_status", None)
+        employment_status = self.request.data.get("employment_status", None)
+        property_status = self.request.data.get("property_status", None)
+
+
+        pollParties = Party.objects.filter(poll_parties__id=poll_id).prefetch_related('poll_parties', 'party_votes') #.order_by('name')
+        
+        context = {
+            "poll_id" : poll_id,
+            "firstTimeVOter" : firstTimeVOter,
+            "gender" :gender,
+            "diaspora_voter" : diaspora_voter,
+            "residence_state" : residence_state,
+            "residence_lga" : residence_lga,
+            "state_of_origin" : state_of_origin,
+            "age_range":age_range,
+            "religion": religion,
+            "marital_status": marital_status,
+            "employment_status": employment_status,
+            "property_status" :property_status
+        }
+
+        serializer = self.serializer_class(pollParties, many=True, context = context)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 

@@ -6,7 +6,6 @@ from utilities.serializers import *
 from rest_framework.generics import ListAPIView, CreateAPIView
 from user.permissions import IsAdmin, IsSuperAdmin
 
-# Create your views here.
 @api_view(['GET', 'POST'])
 def states(request):
     if request.method == 'GET':
@@ -141,3 +140,6 @@ def subscriber(request):
 class PartyList(ListAPIView):
     serializer_class = PartySerializer
     queryset = Party.objects.all()
+
+
+
