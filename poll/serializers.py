@@ -93,24 +93,18 @@ class CandidateSerializer(serializers.ModelSerializer):
         
 class PollPartySerializer(serializers.ModelSerializer):
     partyCandidate = serializers.SerializerMethodField(read_only=True)
-    candidate = serializers.CharField(read_only=True)
 
     
     class Meta:
         model = Party
-        fields = ['id','name', 'partyCandidate', 'logo', 'candidate']
+        fields = ['id','name', 'partyCandidate', 'logo']
         
     def get_partyCandidate(self, obj):
         poll_id = self.context["poll_id"]
         candidate = CandidateSerializer(obj.party_candidate.filter(poll__id=poll_id), many=True).data
         return candidate
 
-    def get_candidate(self,obj):
-        poll_id = self.context["poll_id"]
-        candidate = obj.party_candidate.get(poll__id=poll_id, main_candidate=True)
-        print("hgfdsasdfgh")
-        print(candidate)
-        return candidate
+   
 
 
 
@@ -156,8 +150,9 @@ class PartyVoteSerializer(serializers.ModelSerializer):
 
 class PollPartyResultSerializer(serializers.ModelSerializer):
     voteCount = serializers.SerializerMethodField(read_only=True)
-    party_votes_count = serializers.SerializerMethodField(read_only =True)
-    
+    #party_votes_count = serializers.SerializerMethodField(read_only =True)
+    partyCandidate = serializers.SerializerMethodField(read_only=True)
+
 
     class Meta:
         model = Party
@@ -170,10 +165,14 @@ class PollPartyResultSerializer(serializers.ModelSerializer):
         #vote_count = vote_count.filter(voter__marital_status=3)
         return vote_count.count()
 
-    def get_party_votes_count(self, obj):
-        poll_id = self.context["poll_id"]
-        return PartyVoteSerializer(obj.party_votes_count.filter(poll__id=poll_id), many=True).data
+    # def get_party_votes_count(self, obj):
+    #     poll_id = self.context["poll_id"]
+    #     return PartyVoteSerializer(obj.party_votes_count.filter(poll__id=poll_id), many=True).data
 
+    def get_partyCandidate(self, obj):
+        poll_id = self.context["poll_id"]
+        candidate = CandidateSerializer(obj.party_candidate.filter(poll__id=poll_id), many=True).data
+        return candidate
         
            
         
