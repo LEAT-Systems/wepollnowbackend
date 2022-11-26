@@ -77,6 +77,8 @@ class CandidateSerializer(serializers.ModelSerializer):
     main_candidate = serializers.BooleanField()
     candidate_picture = serializers.ImageField(required=False)
 
+    poll = serializers.CharField(read_only=True)
+
 
 
     class Meta:
@@ -96,6 +98,7 @@ class CandidateSerializer(serializers.ModelSerializer):
             'main_candidate',
             'candidate_picture'
         ]
+
 
 
 
