@@ -75,6 +75,7 @@ class CandidateSerializer(serializers.ModelSerializer):
     senatorial_id = SenatorialSerializer(read_only=True)
 
     main_candidate = serializers.BooleanField()
+    candidate_picture = serializers.ImageField(required=False)
 
 
 
