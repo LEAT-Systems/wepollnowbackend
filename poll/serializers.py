@@ -99,10 +99,9 @@ class PollPartySerializer(serializers.ModelSerializer):
         model = Party
         fields = ['id','name', 'partyCandidate', 'logo']
         
-    def get_partyCandidate(self, obj):
-        poll_id = self.context["poll_id"]
-        candidate = CandidateSerializer(obj.party_candidate.filter(poll__id=poll_id), many=True).data
-        return candidate
+   
+
+    
 
    
 
@@ -152,6 +151,7 @@ class PollPartyResultSerializer(serializers.ModelSerializer):
     voteCount = serializers.SerializerMethodField(read_only=True)
     #party_votes_count = serializers.SerializerMethodField(read_only =True)
     partyCandidate = serializers.SerializerMethodField(read_only=True)
+    votePercent = serializers.SerializerMethodField()
 
 
     class Meta:
@@ -161,8 +161,70 @@ class PollPartyResultSerializer(serializers.ModelSerializer):
     def get_voteCount(self,obj):
         poll_id = self.context["poll_id"]
         vote_count = obj.party_votes.filter(poll__id=poll_id)
-        #vote_count = vote_count.filter(voter__gender=2)
-        #vote_count = vote_count.filter(voter__marital_status=3)
+        return vote_count.count()
+    
+    def get_partyCandidate(self, obj):
+        poll_id = self.context["poll_id"]
+        candidate = CandidateSerializer(obj.party_candidate.filter(poll__id=poll_id), many=True).data
+        return candidate
+    def get_votePercent(self, obj):
+        poll_id = self.context["poll_id"]
+        totalPollVote = Votes.objects.filter(poll__id=poll_id).count()
+        value = self.get_voteCount(obj)
+        percent = (value/totalPollVote) * 100
+        return round(percent, 1)
+
+    # def get_party_votes_count(self, obj):
+    #     poll_id = self.context["poll_id"]
+    #     return PartyVoteSerializer(obj.party_votes_count.filter(poll__id=poll_id), many=True).data
+
+class PollPartyResultFilterSerializer(serializers.ModelSerializer):
+    voteCount = serializers.SerializerMethodField(read_only=True)
+    partyCandidate = serializers.SerializerMethodField(read_only=True)
+    votePercent = serializers.SerializerMethodField()
+
+
+    class Meta:
+        model = Party
+        fields = "__all__"
+
+    def get_voteCount(self,obj):
+        poll_id = self.context["poll_id"]
+        gender = self.context.get("gender", None)
+        firstTimeVOter = self.context.get("firstTimeVOter",None)
+        diaspora_voter = self.context.get("diaspora_voter", None)
+        residence_state = self.context.get("residence_state", None)
+        residence_lga= self.context.get("residence_lga", None)
+        state_of_origin = self.context.get("state_of_origin", None)
+        age_range = self.context.get("age_range", None)
+        religion = self.context.get("religion", None)
+        marital_status = self.context.get("marital_status", None)
+        employment_status = self.context.get("employment_status", None)
+        property_status = self.context.get("property_status", None)
+
+        vote_count = obj.party_votes.filter(poll__id=poll_id)
+        if gender:
+            vote_count = vote_count.filter(voter__gender=gender)
+        if firstTimeVOter:
+            vote_count = vote_count.filter(voter__first_time_voter=firstTimeVOter)
+        if diaspora_voter:
+            vote_count = vote_count.filter(voter__diaspora_voter=diaspora_voter)
+        if residence_state:
+            vote_count = vote_count.filter(voter__resident_state=residence_state)
+        if residence_lga:
+            vote_count = vote_count.filter(voter__resident_lga=residence_lga)
+        if state_of_origin:
+            vote_count = vote_count.filter(voter__state_of_origin=state_of_origin)
+        if age_range:
+            vote_count = vote_count.filter(voter__age_range=age_range)
+        if religion:
+            vote_count = vote_count.filter(voter__religion=religion)
+        if employment_status:
+            vote_count = vote_count.filter(voter__employment_status=employment_status)
+        if marital_status:
+            vote_count = vote_count.filter(voter__marital_status=marital_status)
+        if property_status:
+            vote_count = vote_count.filter(voter__property_status=property_status)
         return vote_count.count()
 
     # def get_party_votes_count(self, obj):
@@ -173,6 +235,13 @@ class PollPartyResultSerializer(serializers.ModelSerializer):
         poll_id = self.context["poll_id"]
         candidate = CandidateSerializer(obj.party_candidate.filter(poll__id=poll_id), many=True).data
         return candidate
+    
+    def get_votePercent(self, obj):
+        poll_id = self.context["poll_id"]
+        totalPollVote = Votes.objects.filter(poll__id=poll_id).count()
+        value = self.get_voteCount(obj)
+        percent = (value/totalPollVote) * 100
+        return round(percent, 1)
         
            
         
