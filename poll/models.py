@@ -17,7 +17,7 @@ class PollCategory(models.Model):
 
 class Poll(models.Model):
     poll_category = models.ForeignKey(PollCategory, blank=False, on_delete=models.CASCADE)
-    poll_name = models.CharField(max_length=30, default="Presidential Election")
+    poll_name = models.CharField(max_length=40, default="Presidential Election")
     poll_date = models.DateTimeField(auto_now_add='True')
     poll_state = models.IntegerField(blank=True, null=True)
     poll_senatorial_district = models.IntegerField(blank=True, null=True)
