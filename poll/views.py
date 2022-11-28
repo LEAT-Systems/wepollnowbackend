@@ -68,17 +68,16 @@ class GetPollPartiesAndCandidates(APIView):
     serializer_class  = PollPartySerializer
 
     def post(self, request):
-    #try :
-        poll_id = self.request.data["poll_id"]
-        pollParties = Party.objects.filter(poll_parties__id=poll_id)
-        print(pollParties)
-        context = {
-            "poll_id" : poll_id
-        }
-        serializer = PollPartySerializer(pollParties, many=True, context = context)
-        return Response(serializer.data)
-    # except (Exception):
-    #     return Response({"error": "Invalid Data" }, status=status.HTTP_400_BAD_REQUEST)           
+        try :
+            poll_id = self.request.data["poll_id"]
+            pollParties = Party.objects.filter(poll_parties__id=poll_id)
+            context = {
+                "poll_id" : poll_id
+            }
+            serializer = PollPartySerializer(pollParties, many=True, context = context)
+            return Response(serializer.data)
+        except (Exception):
+            return Response({"error": "Invalid Data" }, status=status.HTTP_400_BAD_REQUEST)           
 
 
 class GetPartiesAndCandidatesForPollCategory(APIView): 

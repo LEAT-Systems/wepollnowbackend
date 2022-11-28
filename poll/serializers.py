@@ -99,16 +99,11 @@ class PollPartySerializer(serializers.ModelSerializer):
         model = Party
         fields = ['id','name', 'partyCandidate', 'logo']
         
+    def get_partyCandidate(self, obj):
+        poll_id = self.context["poll_id"]
+        candidate = CandidateSerializer(obj.party_candidate.filter(poll__id=poll_id), many=True).data
+        return candidate
    
-
-    
-
-   
-
-
-
-
-    
         
 class CandidateSerializer(serializers.ModelSerializer):
     
@@ -167,6 +162,7 @@ class PollPartyResultSerializer(serializers.ModelSerializer):
         poll_id = self.context["poll_id"]
         candidate = CandidateSerializer(obj.party_candidate.filter(poll__id=poll_id), many=True).data
         return candidate
+
     def get_votePercent(self, obj):
         poll_id = self.context["poll_id"]
         totalPollVote = Votes.objects.filter(poll__id=poll_id).count()
