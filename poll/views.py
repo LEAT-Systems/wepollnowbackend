@@ -51,7 +51,7 @@ class GetPollsForVoters(APIView):
                     lga = Lga.objects.get(id=voter.resident_lga.id)
                     senatorial_id = lga.senatorial_id
                     
-                    polls = Poll.objects.filter(Q(poll_category__id = 1 ) | (Q(poll_category__id=3) & Q(poll_senatorial_district=senatorial_id.id))  | (Q(poll_category__id=2) & Q(poll_state=voter.resident_state.id)))
+                    polls = Poll.objects.filter(Q(poll_category__id = 1 ) | (Q(poll_category__id=3) & Q(poll_senatorial_district__id=senatorial_id.id))  | (Q(poll_category__id=2) & Q(poll_state__id=voter.resident_state.id)))
                     serializer = PollSerializer(polls, many=True)
                     return Response(serializer.data, status=status.HTTP_200_OK)
             else:

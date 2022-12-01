@@ -19,6 +19,8 @@ class PollCategorySerializer(serializers.ModelSerializer):
 class PollSerializer(serializers.ModelSerializer):
     poll_category = PollCategorySerializer(read_only = True)
     poll_date =  serializers.DateTimeField()
+    poll_state_name = serializers.CharField(source='poll_state')
+    poll_senatorial_district_name = serializers.CharField(source="poll_senatorial_district")
     class Meta:
         model = Poll
         fields = [
@@ -26,13 +28,16 @@ class PollSerializer(serializers.ModelSerializer):
             'poll_category',
             'poll_name',
             'poll_state',
+            'poll_state_name',
             'poll_date',
             'poll_senatorial_district',
+            'poll_senatorial_district_name',
             'poll_startDate',
             'poll_endDate',
             'status'
             
         ]
+    
 
 class PartySerializer(serializers.ModelSerializer):
 
