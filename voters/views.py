@@ -20,7 +20,9 @@ class PhonenumberCheck(APIView):
 
         if phoneNumber:
             if Voter.objects.filter(phone=phoneNumber).exists():
-                return Response({"message":"You are already a registered Voter"}, status=status.HTTP_403_FORBIDDEN)
+                voter = Voter.objects.get(phone=phoneNumber)
+                voter_id = voter.id
+                return Response({"message":"A registered Voter", "voter_id": voter_id}, status=status.HTTP_208_ALREADY_REPORTED)
             else:
                 return Response( status=status.HTTP_200_OK)
         else:
