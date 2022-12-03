@@ -19,8 +19,8 @@ class Poll(models.Model):
     poll_category = models.ForeignKey(PollCategory, blank=False, on_delete=models.CASCADE)
     poll_name = models.CharField(max_length=40, default="Presidential Election")
     poll_date = models.DateTimeField(auto_now_add='True')
-    poll_state = models.ForeignKey('utilities.State',blank=False, null=True, on_delete=models.SET_NULL, related_name='poll_state')
-    poll_senatorial_district = models.ForeignKey('utilities.Senatorial', blank=False, null=True, on_delete=models.SET_NULL, related_name='poll_senatorial_district')
+    poll_state = models.ForeignKey('utilities.State',blank=True, null=True, on_delete=models.SET_NULL, related_name='poll_state')
+    poll_senatorial_district = models.ForeignKey('utilities.Senatorial', blank=True, null=True, on_delete=models.SET_NULL, related_name='poll_senatorial_district')
     poll_startDate = models.DateTimeField(default=timezone.now)
     poll_endDate = models.DateTimeField(default=timezone.now)
     party = models.ManyToManyField('utilities.Party', related_name="poll_parties")
@@ -52,3 +52,8 @@ class VoteCount (models.Model):
 
     def __str__(self):
         return self.party.name
+
+class Test (models.Model):
+    name=models.CharField(max_length=34)
+    def __str__(self):
+        return self.name
