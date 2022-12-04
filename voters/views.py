@@ -24,7 +24,7 @@ class PhonenumberCheck(APIView):
                 voter_id = voter.id
                 return Response({"message":"A registered Voter", "voter_id": voter_id}, status=status.HTTP_208_ALREADY_REPORTED)
             else:
-                return Response( status=status.HTTP_200_OK)
+                return Response( {"message":"New User"}, status=status.HTTP_200_OK)
         else:
             return Response({"message":"Please Input a phone number"}, status=status.HTTP_400_BAD_REQUEST)
 
