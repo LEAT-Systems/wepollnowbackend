@@ -68,9 +68,9 @@ class CreatePollSerializer(serializers.ModelSerializer):
             'poll_endDate',
             'status',
             'party',
-            'candidate'
-            
+            'candidate'        
         ]
+
     
     def create(self, validated_data):
         partyid = validated_data.pop('party', [])
@@ -83,14 +83,13 @@ class CreatePollSerializer(serializers.ModelSerializer):
             senatorial = Senatorial.objects.get(id=senatorial_id)
         poll_category_id = validated_data.pop('poll_category_id')
         pollCategory = PollCategory.objects.get(id=poll_category_id)
-        print(pollCategory)
 
-        if state_id is not None:
-            print(state)
+        if senatorial_id and state_id:
+            poll = Poll.objects.create(poll_category=pollCategory, poll_state=state, poll_senatorial_district= senatorial, **validated_data)
+
+        elif state_id is not None:
             poll = Poll.objects.create(poll_category=pollCategory, poll_state=state, **validated_data)
-        elif senatorial_id is not None:
-            print(senatorial)
-            poll = Poll.objects.create(poll_category=pollCategory,poll_senatorial_district= senatorial, **validated_data)
+        
         else:
             poll = Poll.objects.create(poll_category=pollCategory, **validated_data)
 
