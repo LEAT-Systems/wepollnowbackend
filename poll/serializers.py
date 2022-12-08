@@ -2,6 +2,35 @@ from rest_framework import serializers, fields
 from poll.models import *
 from utilities.models import Party, Candidate, State,Senatorial
 
+class StateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = State
+        fields = [
+            'id',
+            'name'
+        ]
+
+
+class SenatorialSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Senatorial
+        fields = [
+            'id',
+            'name',
+            'state_id'
+        ]
+
+class SurveyCategorySerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = SurveyCategory
+        fields = "__all__"
+
+class SurveyResponseSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = SurveyResponse
+        fields = "__all__"
 
 
 
@@ -103,6 +132,42 @@ class CreatePollSerializer(serializers.ModelSerializer):
     
 
         return poll
+
+class PollSerializer(serializers.ModelSerializer):
+    poll_startDate = serializers.DateTimeField(format="%Y-%m-%dT%H:%M:%S")
+    poll_endDate = serializers.DateTimeField(format="%Y-%m-%dT%H:%M:%S")
+    poll_state_id = serializers.IntegerField(required=False)
+    poll_state = StateSerializer(read_only = True)
+    poll_senatorial_district_id=  serializers.IntegerField(required=False)
+    poll_senatorial_district =SenatorialSerializer(read_only=True)
+    poll_category_id = serializers.IntegerField(write_only=True)
+    poll_category = PollCategorySerializer(read_only=True)
+    party = serializers.PrimaryKeyRelatedField(queryset = Party.objects.all(), many = True, write_only=True)
+    candidate = serializers.ListField(child=serializers.IntegerField(), write_only=True)
+
+    
+    class Meta:
+        model = Poll
+        fields =  "__all__"
+
+    def update(self, instance, validated_data):
+        candidate = validated_data.pop('candidate', [])
+        instance = super().update(instance, validated_data)
+        if candidate:
+            instance.poll_candidate.clear()
+        for id in candidate:
+             candidateObject = Candidate.objects.get(id=id)
+             candidateObject.poll= instance
+             candidateObject.save()
+        return instance 
+
+    
+
+
+
+
+
+
         
         
         
