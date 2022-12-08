@@ -12,3 +12,5 @@ class PollAdmin(admin.ModelAdmin):
 
 admin.site.register(Votes)
 admin.site.register(VoteCount)
+admin.site.register(SurveyCategory)
+admin.site.register(SurveyResponse)

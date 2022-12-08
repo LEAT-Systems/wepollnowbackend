@@ -5,6 +5,10 @@ from utilities.models import Lga, State
 from utilities.serializers import *
 from rest_framework.generics import ListAPIView, CreateAPIView
 from user.permissions import IsAdmin, IsSuperAdmin
+from rest_framework.generics import GenericAPIView
+from rest_framework import mixins
+from rest_framework.request import Request
+
 
 @api_view(['GET', 'POST'])
 def states(request):
@@ -108,9 +112,19 @@ def candidates(request):
         serialized_data = CandidateSerializer(data, many='True')
         return Response(serialized_data.data)
 
-# @api_view(['UPDATE'])
-# def update_candidate_party(request,id,poll_id ):
-#     data = Candidate.objects.filter(id = id)
+class CandidateRetrieveUpdateDelete(GenericAPIView, mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin):
+    serializer_class = CandidateSerializer
+    queryset = Candidate.objects.all()
+
+    def get(self, request:Request, *args, **kwargs):
+        return self.retrieve(request, *args, **kwargs) 
+    
+    def put(self, request:Request, *args, **kwargs):
+        return self.update(request, *args, **kwargs)
+    
+    def delete(self, request:Request, *args, **kwargs):
+        return self.destroy(request, *args, **kwargs)
+
     
 class CreateContact(CreateAPIView):
     serializer_class = ContactSerializer

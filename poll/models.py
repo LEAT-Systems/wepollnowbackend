@@ -53,7 +53,17 @@ class VoteCount (models.Model):
     def __str__(self):
         return self.party.name
 
-class Test (models.Model):
-    name=models.CharField(max_length=34)
+class SurveyCategory(models.Model):
+    surveyName = models.CharField(max_length=60)
+
     def __str__(self):
-        return self.name
+        return self.surveyName
+
+class SurveyResponse(models.Model):
+    surveyCategory = models.ForeignKey(SurveyCategory, blank=False, null=False, on_delete=models.CASCADE, related_name="survey_category")
+    poll = models.ForeignKey(Poll, blank=False, null=False, on_delete=models.CASCADE, related_name="poll_survey")
+    voter = models.ForeignKey(Voter, blank=False, null=False, on_delete=models.CASCADE, related_name='voter_survey')
+    description = models.TextField(blank=True)
+
+    def __str__(self):
+        return self.voter.phone

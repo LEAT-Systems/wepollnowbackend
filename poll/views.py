@@ -2,6 +2,7 @@ import re
 from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
+from rest_framework.request import Request
 from poll.models import *
 from poll.serializers import *
 from rest_framework.generics import ListAPIView, CreateAPIView, ListCreateAPIView 
@@ -14,7 +15,15 @@ from django.db.models import Count
 
 from rest_framework.filters import OrderingFilter
 from rest_framework.generics import GenericAPIView
+from rest_framework import mixins
 
+class SurveyCategory(ListCreateAPIView):
+    queryset = SurveyCategory.objects.all()
+    serializer_class = SurveyCategorySerializer
+
+class SurveyResponse(ListCreateAPIView):
+    queryset = SurveyResponse.objects.all()
+    serializer_class = SurveyResponseSerializer
 
 
 class PollCategoryList(ListAPIView):
@@ -28,6 +37,20 @@ class CandidatesList(ListAPIView):
 class Polls(CreateAPIView):
     serializer_class = CreatePollSerializer
     queryset = Poll.objects.all()
+
+class PollRetrieveUpdateDelete(GenericAPIView, mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin):
+    serializer_class = PollSerializer
+    queryset = Poll.objects.all()
+
+    def get(self, request:Request, *args, **kwargs):
+        return self.retrieve(request, *args, **kwargs) 
+    
+    def put(self, request:Request, *args, **kwargs):
+        return self.update(request, *args, **kwargs)
+    
+    def delete(self, request:Request, *args, **kwargs):
+        return self.destroy(request, *args, **kwargs)
+
 
 class AllPollsList(ListAPIView):
     serializer_class = PollSerializer
