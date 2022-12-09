@@ -7,7 +7,7 @@ urlpatterns = [
     path('poll_candidates/', GetPollPartiesAndCandidates.as_view(), name="poll_candidates"),
     path("poll_category/", PollCategoryList.as_view(), name="poll_category"),
     path("create_poll/", Polls.as_view(), name="create_poll"),
-    path("retrieve_update_delete_poll/<int:pk>", PollRetrieveUpdateDelete.as_view(), name="retrieve_update_delete_poll"),
+    path("rud_poll/<int:pk>", PollRetrieveUpdateDelete.as_view(), name="retrieve_update_delete_poll"),
 
     path("candidatesList/", CandidatesList.as_view(), name="candidatesList"),
     path("get_polls/", AllPollsList.as_view(), name="get_polls"),

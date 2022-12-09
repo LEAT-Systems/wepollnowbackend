@@ -18,7 +18,7 @@ urlpatterns = [
     path('subscriber/', subscriber),
 
     path('candidates/', candidates),
-    path('retrieve_update_delete_candidate/<int:pk>', CandidateRetrieveUpdateDelete.as_view(), name="retrieve_update_delete_candidate"),
+    path('rud_candidate/<int:pk>', CandidateRetrieveUpdateDelete.as_view(), name="retrieve_update_delete_candidate"),
 
     #Seeders
     path('seed/lga', seed_lga),
