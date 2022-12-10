@@ -134,7 +134,7 @@ class GetPartiesAndCandidatesForPollCategory(APIView):
 
             serializer = PollCategoryPartySerializer(pollParties, many=True, context = context)
             return Response(serializer.data)
-            
+             
         except (Exception):
             return Response({"error": "Invalid Data"}, status=status.HTTP_400_BAD_REQUEST) 
 

@@ -21,10 +21,19 @@ class SenatorialSerializer(serializers.ModelSerializer):
         ]
 
 class SurveyCategorySerializer(serializers.ModelSerializer):
-
+    survey_name = serializers.ListField(child=serializers.CharField(), write_only=True)
+    surveyName = serializers.CharField(required=False)
     class Meta:
         model = SurveyCategory
         fields = "__all__"
+
+    def create(self, validated_data):
+        surveyName = validated_data.pop('survey_name', [])
+        if surveyName:
+            for name in surveyName:
+                survey_category = SurveyCategory.objects.create(surveyName = name)
+
+        return survey_category
 
 class SurveyResponseSerializer(serializers.ModelSerializer):
 

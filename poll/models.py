@@ -63,7 +63,7 @@ class SurveyResponse(models.Model):
     surveyCategory = models.ForeignKey(SurveyCategory, blank=False, null=False, on_delete=models.CASCADE, related_name="survey_category")
     poll = models.ForeignKey(Poll, blank=False, null=False, on_delete=models.CASCADE, related_name="poll_survey")
     voter = models.ForeignKey(Voter, blank=False, null=False, on_delete=models.CASCADE, related_name='voter_survey')
-    description = models.TextField(blank=True)
+    description = models.TextField(blank=True, null=True)
 
     def __str__(self):
         return self.voter.phone

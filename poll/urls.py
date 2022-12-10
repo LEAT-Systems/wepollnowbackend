@@ -16,7 +16,6 @@ urlpatterns = [
     path("poll_result_filter/", PollResultFilter.as_view(), name="poll_result_filter"),
     path("poll_survey_category/", SurveyCategory.as_view(), name="poll_survey_category"),
     path("poll_survey_response/", SurveyResponse.as_view(), name="poll_survey_response")
-
     
 ]
 
