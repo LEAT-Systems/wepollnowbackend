@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     
     #third party apps
     'django_filters',
+    
     #'cloudinary_storage',
     
 ]

@@ -17,6 +17,7 @@ from rest_framework.filters import OrderingFilter
 from rest_framework.generics import GenericAPIView
 from rest_framework import mixins
 
+
 class SurveyCategory(ListCreateAPIView):
     queryset = SurveyCategory.objects.all()
     serializer_class = SurveyCategorySerializer
@@ -43,13 +44,14 @@ class PollRetrieveUpdateDelete(GenericAPIView, mixins.RetrieveModelMixin, mixins
     queryset = Poll.objects.all()
 
     def get(self, request:Request, *args, **kwargs):
+
         return self.retrieve(request, *args, **kwargs) 
     
     def put(self, request:Request, *args, **kwargs):
         return self.update(request, *args, **kwargs)
     
     def delete(self, request:Request, *args, **kwargs):
-        return self.destroy(request, *args, **kwargs)
+        return self.destroy(request, *args, **kwargs) 
 
 
 class AllPollsList(ListAPIView):
