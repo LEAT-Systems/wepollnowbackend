@@ -31,6 +31,10 @@ class SurveyCategoryListView(ListAPIView):
         context['poll_id'] = self.kwargs['poll_id']
         return context
 
+class AllSurveyCategoryListView(ListAPIView):
+    queryset = SurveyCategory.objects.all()
+    serializer_class = SurveyCategoryRudSerializer
+
 class SurveyCategoryRetrieveUpdateDelete(GenericAPIView, mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin):
     serializer_class = SurveyCategoryRudSerializer
     queryset = SurveyCategory.objects.all()
