@@ -18,11 +18,34 @@ from rest_framework.generics import GenericAPIView
 from rest_framework import mixins
 
 
-class SurveyCategory(ListCreateAPIView):
+class SurveyCategoryView(CreateAPIView):
     queryset = SurveyCategory.objects.all()
-    serializer_class = SurveyCategorySerializer
+    serializer_class = SurveyCategoryCreateSerializer
 
-class SurveyResponse(ListCreateAPIView):
+class SurveyCategoryListView(ListAPIView):
+    queryset = SurveyCategory.objects.all()
+    serializer_class = SurveyCategoryRetrieveSerializer
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context['poll_id'] = self.kwargs['poll_id']
+        return context
+
+class SurveyCategoryRetrieveUpdateDelete(GenericAPIView, mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin):
+    serializer_class = SurveyCategoryRudSerializer
+    queryset = SurveyCategory.objects.all()
+
+    def get(self, request:Request, *args, **kwargs):
+
+        return self.retrieve(request, *args, **kwargs) 
+    
+    def put(self, request:Request, *args, **kwargs):
+        return self.update(request, *args, **kwargs)
+    
+    def delete(self, request:Request, *args, **kwargs):
+        return self.destroy(request, *args, **kwargs) 
+
+class SurveyResponseView(ListCreateAPIView):
     queryset = SurveyResponse.objects.all()
     serializer_class = SurveyResponseSerializer
 

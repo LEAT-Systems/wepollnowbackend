@@ -20,11 +20,10 @@ class SenatorialSerializer(serializers.ModelSerializer):
             'state_id'
         ]
 
-class SurveyCategorySerializer(serializers.ModelSerializer):
+class SurveyCategoryCreateSerializer(serializers.ModelSerializer):
     survey_name = serializers.ListField(child=serializers.CharField(), write_only=True)
     surveyName = serializers.CharField(required=False)
-    response_count = serializers.SerializerMethodField()
-    percentage = serializers.SerializerMethodField()
+
     class Meta:
         model = SurveyCategory
         fields = "__all__"
@@ -38,17 +37,33 @@ class SurveyCategorySerializer(serializers.ModelSerializer):
         return survey_category
 
     
+    
+
+class SurveyCategoryRetrieveSerializer(serializers.ModelSerializer):
+    response_count = serializers.SerializerMethodField()
+    percentage = serializers.SerializerMethodField()
+    class Meta:
+        model = SurveyCategory
+        fields = "__all__"
+
     def get_response_count(self, obj):
-        
-        category_percentage = obj.survey_category.filter(poll__id=28).count()
-        return category_percentage
+        poll_id = self.context["poll_id"]
+        category_count = obj.survey_category.filter(poll__id=poll_id).count()
+        return category_count
 
 
     def get_percentage(self, obj):
-        totalResponse = SurveyResponse.objects.all().count()
+        poll_id = self.context["poll_id"]
+        totalResponse = SurveyResponse.objects.filter(poll__id=poll_id).count()
         value = self.get_response_count(obj)
         percent = (value/totalResponse) * 100
         return round(percent, 1)
+
+class SurveyCategoryRudSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = SurveyCategory
+        fields = "__all__"
 
 class SurveyResponseSerializer(serializers.ModelSerializer):
 

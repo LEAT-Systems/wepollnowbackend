@@ -14,8 +14,10 @@ urlpatterns = [
     path("poll_category_party/" , GetPartiesAndCandidatesForPollCategory.as_view(), name="poll_category_party"),
     path("poll_result/", PollResult.as_view(), name="poll_result"),
     path("poll_result_filter/", PollResultFilter.as_view(), name="poll_result_filter"),
-    path("poll_survey_category/", SurveyCategory.as_view(), name="poll_survey_category"),
-    path("poll_survey_response/", SurveyResponse.as_view(), name="poll_survey_response")
+    path("poll_survey_category/", SurveyCategoryView.as_view(), name="poll_survey_category"),
+    path("poll_survey_category/<int:poll_id>", SurveyCategoryListView.as_view(), name="poll_survey_category_list"),
+    path("rud_survey_category/<int:pk>", SurveyCategoryRetrieveUpdateDelete.as_view(), name="retrieve_update_delete_surveyCategory"),
+    path("poll_survey_response/", SurveyResponseView.as_view(), name="poll_survey_response")
     
 ]
 
