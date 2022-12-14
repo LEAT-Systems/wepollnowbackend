@@ -34,7 +34,7 @@ def get_random_password():
     
 
     # generate other characters
-    for i in range(4):
+    for i in range(5):
         password += random.choice(random_source)
 
     password_list = list(password)
@@ -93,7 +93,8 @@ class LoginView(APIView):
             tokens = create_jwt_pair_for_user(user)
             response = {
                 "message": "Login Successful",
-                "token": tokens
+                "token": tokens,
+                "name": user.name
             }
             return Response(data=response, status=status.HTTP_200_OK)
 
