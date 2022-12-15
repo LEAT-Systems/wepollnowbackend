@@ -3,6 +3,7 @@ from rest_framework import serializers
 
 
 class BlogSerializer(serializers.ModelSerializer):
+    author = serializers.CharField(required=False)
     
 
     class Meta:
