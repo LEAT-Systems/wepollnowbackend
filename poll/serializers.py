@@ -199,16 +199,7 @@ class PollSerializer(serializers.ModelSerializer):
              candidateObject.poll= instance
              candidateObject.save()
         return instance 
-
-    
-
-
-
-
-
-
-        
-        
+     
         
 class CandidateSerializer(serializers.ModelSerializer):
     
@@ -269,7 +260,6 @@ class PartyVoteSerializer(serializers.ModelSerializer):
 
 class PollPartyResultSerializer(serializers.ModelSerializer):
     voteCount = serializers.SerializerMethodField(read_only=True)
-    #party_votes_count = serializers.SerializerMethodField(read_only =True)
     partyCandidate = serializers.SerializerMethodField(read_only=True)
     votePercent = serializers.SerializerMethodField()
 
@@ -292,12 +282,16 @@ class PollPartyResultSerializer(serializers.ModelSerializer):
         poll_id = self.context["poll_id"]
         totalPollVote = Votes.objects.filter(poll__id=poll_id).count()
         value = self.get_voteCount(obj)
-        percent = (value/totalPollVote) * 100
-        return round(percent, 1)
+        try:
+            percent = (value/totalPollVote) * 100
+            return round(percent, 1)
+        except Exception:
+            return 0
+        
 
-    # def get_party_votes_count(self, obj):
-    #     poll_id = self.context["poll_id"]
-    #     return PartyVoteSerializer(obj.party_votes_count.filter(poll__id=poll_id), many=True).data
+    def get_party_votes_count(self, obj):
+        poll_id = self.context["poll_id"]
+        return PartyVoteSerializer(obj.party_votes_count.filter(poll__id=poll_id), many=True).data
 
 class PollPartyResultFilterSerializer(serializers.ModelSerializer):
     voteCount = serializers.SerializerMethodField(read_only=True)
@@ -348,9 +342,6 @@ class PollPartyResultFilterSerializer(serializers.ModelSerializer):
             vote_count = vote_count.filter(voter__property_status=property_status)
         return vote_count.count()
 
-    # def get_party_votes_count(self, obj):
-    #     poll_id = self.context["poll_id"]
-    #     return PartyVoteSerializer(obj.party_votes_count.filter(poll__id=poll_id), many=True).data
 
     def get_partyCandidate(self, obj):
         poll_id = self.context["poll_id"]
@@ -361,8 +352,11 @@ class PollPartyResultFilterSerializer(serializers.ModelSerializer):
         poll_id = self.context["poll_id"]
         totalPollVote = Votes.objects.filter(poll__id=poll_id).count()
         value = self.get_voteCount(obj)
-        percent = (value/totalPollVote) * 100
-        return round(percent, 1)
+        try:
+            percent = (value/totalPollVote) * 100
+            return round(percent, 1)
+        except Exception:
+            return 0
         
            
         
