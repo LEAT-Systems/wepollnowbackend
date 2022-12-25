@@ -199,7 +199,7 @@ class PollSerializer(serializers.ModelSerializer):
              candidateObject.poll= instance
              candidateObject.save()
         return instance 
-     
+      
         
 class CandidateSerializer(serializers.ModelSerializer):
     
