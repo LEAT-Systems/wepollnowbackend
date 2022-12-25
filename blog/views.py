@@ -11,7 +11,7 @@ from rest_framework.validators import ValidationError
 class CreateBlog(ListCreateAPIView):
     serializer_class = BlogSerializer
     queryset = Blog.objects.all()
-    pagination_class = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
     def perform_create(self, serializer):
         try:
