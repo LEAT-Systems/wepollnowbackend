@@ -14,7 +14,4 @@ urlpatterns = [
     path("admins/", AdminListView.as_view(), name="adminlist"),
     path("admin/<int:pk>/", AdminRetrieveUpdateDeleteView.as_view(), name="admin"),
     path("update_password/", ChangePasswordView.as_view(), name="update_password")
-
-    
-   
 ]

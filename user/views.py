@@ -97,7 +97,8 @@ class LoginView(APIView):
             response = {
                 "message": "Login Successful",
                 "token": tokens,
-                "name": user.name
+                "name": user.name,
+                "superAdminstatus" : user.is_superuser
             }
             return Response(data=response, status=status.HTTP_200_OK)
 
