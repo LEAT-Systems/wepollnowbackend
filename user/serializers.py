@@ -11,11 +11,7 @@ class ChangePasswordSerializer(serializers.Serializer):
 
     old_password = serializers.RegexField(regex=r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$', required=True, error_messages={'required': 'Custom error message'})
     new_password = serializers.RegexField(regex=r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$', required=True, error_messages={'required': 'Custom error message'})
-
- 
-
-    
-
+  
 
 class RoleSerializer(serializers.ModelSerializer):
     
@@ -25,6 +21,15 @@ class RoleSerializer(serializers.ModelSerializer):
 
 class UserSerializer(serializers.ModelSerializer):
 
+    class Meta:
+        model = User
+        fields = "__all__"
+
+class UserRUDSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(required=False)
+    name= serializers.CharField(required=False)
+    email = serializers.CharField(required=False)
+    
     class Meta:
         model = User
         fields = "__all__"
