@@ -55,9 +55,14 @@ class SurveyCategoryRetrieveSerializer(serializers.ModelSerializer):
     def get_percentage(self, obj):
         poll_id = self.context["poll_id"]
         totalResponse = SurveyResponse.objects.filter(poll__id=poll_id).count()
+        
         value = self.get_response_count(obj)
-        percent = (value/totalResponse) * 100
-        return round(percent, 1)
+        try:
+            percent = (value/totalResponse) * 100
+            return round(percent, 1)
+        except Exception:
+            return 0
+        
 
 class SurveyCategoryRudSerializer(serializers.ModelSerializer):
     
