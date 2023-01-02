@@ -21,6 +21,7 @@ class Poll(models.Model):
     poll_date = models.DateTimeField(auto_now_add='True')
     poll_state = models.ForeignKey('utilities.State',blank=True, null=True, on_delete=models.SET_NULL, related_name='poll_state')
     poll_senatorial_district = models.ForeignKey('utilities.Senatorial', blank=True, null=True, on_delete=models.SET_NULL, related_name='poll_senatorial_district')
+    poll_constituency = models.ForeignKey('utilities.Constituency', blank=True, null=True, on_delete=models.SET_NULL, related_name='poll_constituency')
     poll_startDate = models.DateTimeField(default=timezone.now)
     poll_endDate = models.DateTimeField(default=timezone.now)
     party = models.ManyToManyField('utilities.Party', related_name="poll_parties")

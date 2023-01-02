@@ -16,6 +16,13 @@ class Senatorial(models.Model):
     def __str__(self):
         return self.name
 
+class Constituency(models.Model):
+    name = models.CharField(max_length=40)
+    state_id = models.ForeignKey(State, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name
+
 class Lga(models.Model):
     name = models.CharField(max_length=40)
     state_id = models.ForeignKey(State, on_delete=models.CASCADE)
@@ -37,8 +44,8 @@ class Candidate(models.Model):
     poll_category = models.ForeignKey(PollCategory, blank=False,  null=True, on_delete=models.SET_NULL, related_name="pollCategory_candidate")
     party = models.ForeignKey(Party, blank=False, null=True, on_delete=models.SET_NULL, related_name="party_candidate")
     state_id = models.ForeignKey(State, blank=True,  null=True, on_delete=models.SET_NULL, related_name="state_candidate")
-    senatorial_id = models.ForeignKey(Senatorial, blank=True,  null=True, on_delete=models.SET_NULL, related_name="state_candidate")
-    # zonal_id = models.ForeignKey(State, on_delete=models.CASCADE, related_name="state_candidate")
+    senatorial_id = models.ForeignKey(Senatorial, blank=True,  null=True, on_delete=models.SET_NULL, related_name="senatorial_candidate")
+    constituency_id = models.ForeignKey(Constituency, on_delete=models.CASCADE, related_name="constituency_candidate")
     main_candidate = models.BooleanField(default=True)
     candidate_picture = models.ImageField(upload_to="candidate_pics", default="Account-user.png")
     
