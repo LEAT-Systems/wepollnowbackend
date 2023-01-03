@@ -22,6 +22,15 @@ class SenatorialSerializer(serializers.ModelSerializer):
             'state_id'
         ]
 
+class ConstituencySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Constituency
+        fields = [
+            'id',
+            'name',
+            'state_id'
+        ]
+
 class LgaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Lga

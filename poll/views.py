@@ -246,6 +246,13 @@ class PollResultFilter(GenericAPIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
+class PollDetailResultView(ListAPIView):
+    serializer_class = PollPartyResultCandidateSerializer
+
+    def get_object(self):
+
+        poll = Poll.objects.get(id=self.kwargs['pk'])
+        return poll
 
           
 

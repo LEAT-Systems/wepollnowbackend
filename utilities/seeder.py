@@ -47,14 +47,14 @@ def seed_senatorial(request):
 def seed_constituencies(request):
 
     if request.method == 'POST':
-        data = [('Aba N/S',1),('Arochukwu/Ohafia',1),('Bende',1),('Nsiala Ngwa N/S',1),('Isuikwuato/Umu-Nneochi',1),('Obingwa/Ugwunagbo/Osisioma',1),('Umuahia(N/S)/Ikwuano',1),('Ukwa E/W',1),('Demsa/Numan/Lamurde',2),('Furore/Song',2),('Mayo Belwa/Ganye/Jada/Toungo',2),('Gombi/Hong',2),('Guyuk/Shelleng',2),('Madagali/Michika',2),('Maiha/Mubi(N/S)',2),('Yola(N/S)/Girei',2),('Anambra(E/W)',3),('Onitcha(N/S)',3),('Ogbaru',3),('Aguata',3),('Oyi/Ayamelum',3),('Awka(N/S)',3),('Nijikoka/Dunukofia/Anaocha',3),('Idemili(N/S)',3),('Ihiala',3),('Nnewi(N/S)/Ekwusigo',3),('Orumba(N/S)',3),('Abak/Etim Ekpo/Ika',4),('Eket/Onna/Esit Eket/Ibeno',4),('Etinan/Nsit Ibom/Nsit Ubium',4),('Ikono/Ini',4),('Ikot Absai/Mkpat Enin/Eastern Obolo',4),('Ikot Ekpene/Essien Udim/Obot Akara',4),('Itu/Ibiono Ibom',4),('Oron/Mbo/Okobo/Udung Uko/Urue Offong/Uruko',4),('Ukanafun/Oruk Anam',4),('Uyo/Uruan/Nsit Atai/Ibesikpo Asutan',4),('Ekiti Central',5),('Ekiti North',5),('Enugu North',5),('Enugu East',5),('Enugu West',14),('Federal Capital Territory',15),('Gombe Central',16),('Gombe North',16),('Gombe South',16),('Imo East',17),('Imo North',17),('Imo West',17),('Jigawa North - West',18),('Jigawa North - East',18),('Jigawa South - West',18),('Kaduna Central',19),('Kaduna North',19),('Kaduna South',19),('Kano South',20),('Kano Central',20),('Kano North',20),("Katsina Central",21),('Katsina North',21),('Katsina South',21),('Kebbi Central',22),('Kebbi North',22),('Kebbi South',22),('Kogi Central',23),('Kogi East',23),('Kogi West',23),('Kwara Central',24),('Kwara North',24),('Kwara South',24),('Lagos West',25),('Lagos Central',25),('Lagos East',25),('Nasarawa South',26),('Nasarawa North',26),('Nasarawa West',26),('Niger East',27),('Niger North',27),('Niger South',27),('Ogun Central',28),('Ogun East',28),('Ogun West',28),('Ondo Central',29),('Ondo North',29),('Ondo South',29),('Osun Central',30),('Osun East',30),('Osun West',30),("Oyo Central",31),('Oyo North',31),('Oyo South',31),('Plateau Central',32),('Plateau North',32),('Plateau South',32),('Rivers East',33),('Rivers South East',33),('Rivers West',33),('Sokoto East',34),('Sokoto North',34),('Sokoto South',34),('Taraba Central',35),('Taraba North',35),('Taraba South',35),('Yobe East',36),('Yobe North',36),('Yobe South',36),('Zamfara Central',37),('Zamfara North',37),('Zamfara West',37)]
+        data = [('Aba N/S',1),('Arochukwu/Ohafia',1),('Bende',1),('Nsiala Ngwa N/S',1),('Isuikwuato/Umu-Nneochi',1),('Obingwa/Ugwunagbo/Osisioma',1),('Umuahia(N/S)/Ikwuano',1),('Ukwa E/W',1),('Demsa/Numan/Lamurde',2),('Furore/Song',2),('Mayo Belwa/Ganye/Jada/Toungo',2),('Gombi/Hong',2),('Guyuk/Shelleng',2),('Madagali/Michika',2),('Maiha/Mubi(N/S)',2),('Yola(N/S)/Girei',2),('Anambra(E/W)',3),('Onitcha(N/S)',3),('Ogbaru',3),('Aguata',3),('Oyi/Ayamelum',3),('Awka(N/S)',3),('Nijikoka/Dunukofia/Anaocha',3),('Idemili(N/S)',3),('Ihiala',3),('Nnewi(N/S)/Ekwusigo',3),('Orumba(N/S)',3),('Abak/Etim Ekpo/Ika',4),('Eket/Onna/Esit Eket/Ibeno',4),('Etinan/Nsit Ibom/Nsit Ubium',4),('Ikono/Ini',4),('Ikot Absai/Mkpat Enin/Eastern Obolo',4),('Ikot Ekpene/Essien Udim/Obot Akara',4),('Itu/Ibiono Ibom',4),('Oron/Mbo/Okobo/Udung Uko/Urue Offong/Uruko',4),('Ukanafun/Oruk Anam',4),('Uyo/Uruan/Nsit Atai/Ibesikpo Asutan',4)]
         for i in data:
             json_data = {"name" : i[0], "state_id" : i[1]}
-            serialized_data = SenatorialSerializer(data=json_data)
+            serialized_data = ConstituencySerializer(data=json_data)
             if serialized_data.is_valid():
                 serialized_data.save()
         return Response(serialized_data.data)
-
+ 
 @api_view(['DELETE'])
 def clearStates(request):
     count = State.objects.all().delete
@@ -69,7 +69,7 @@ def clearLga(request):
 def seed_parties(request):
 
     if request.method == 'POST':
-        data =  [('Accord', 'A'),('Action Alliance', 'AA'),(3,'Action Democratic Party', 'ADP'),('Action Peoples Party','APP'),('African Action Congress','ACC'),('African Democratic Congress', 'ADC'),('All Progressives Congress','APC'),('All Progressives Grand Alliance','APGA'),('CAllied Peoples Movement', 'APM'),('Boot Party', 'BP'),('Labour Party', 'LP'),('National Rescue Movement', 'NRM'),('New Nigeria Peoples Party', 'NNPP'),('Peoples Democratic Party', 'PDP'),('Peoples Redemption Party', 'PRP'),('Social Democratic Party', 'SDP'),('Young Progressive Party', 'YPP'),('Zenith Labour Party', 'ZLP')]
+        data =  [('Accord', 'A'),('Action Alliance', 'AA'),('Action Democratic Party', 'ADP'),('Action Peoples Party','APP'),('African Action Congress','ACC'),('African Democratic Congress', 'ADC'),('All Progressives Congress','APC'),('All Progressives Grand Alliance','APGA'),('CAllied Peoples Movement', 'APM'),('Boot Party', 'BP'),('Labour Party', 'LP'),('National Rescue Movement', 'NRM'),('New Nigeria Peoples Party', 'NNPP'),('Peoples Democratic Party', 'PDP'),('Peoples Redemption Party', 'PRP'),('Social Democratic Party', 'SDP'),('Young Progressive Party', 'YPP'),('Zenith Labour Party', 'ZLP')]
         for i in data:
             json_data = {"name" : i[0], "abbr" : i[1]}
             serialized_data = PartySerializer(data=json_data)

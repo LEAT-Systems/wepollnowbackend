@@ -25,7 +25,7 @@ urlpatterns = [
     path('seed/states', seed_states),
     path('seed/senatorial', seed_senatorial),
     path('seed/party', seed_parties),
-    #path('seed/senatorial', seed_constituencies),
+    path('seed/constituency', seed_constituencies),
     path('seed/resetState', clearStates),
     path('seed/resetLga', clearLga),
 ]

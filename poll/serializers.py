@@ -363,5 +363,18 @@ class PollPartyResultFilterSerializer(serializers.ModelSerializer):
         except Exception:
             return 0
         
-           
-        
+class VoteSerializer(serializers.ModelSerializer):
+    voter = serializers.CharField()
+    party = PartySerializer(read_only = True)
+
+    class Meta:
+        model = Votes
+        fields = "__all__"
+
+
+class PollPartyResultCandidateSerializer(serializers.ModelSerializer):
+    poll_votes = VoteSerializer(many=True, read_only =True)
+
+    class Meta:
+        model = Poll
+        fields = "__all__"
