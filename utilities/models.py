@@ -33,6 +33,7 @@ class Lga(models.Model):
 
 class Party(models.Model):
     name = models.CharField(max_length=40)
+    abbr = models.CharField( blank=True, null=True, max_length=8)
     logo = models.ImageField(default='Account-user.png', upload_to='party_pictures')
    
     def __str__(self):
