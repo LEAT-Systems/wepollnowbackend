@@ -97,6 +97,13 @@ def senatorial_by_state(request, state_id):
         serialized_data = SenatorialSerializer(data, many='True')
         return Response(serialized_data.data)
 
+@api_view(['GET'])
+def constituency_by_state(request, state_id):
+    if request.method == 'GET':
+        data = Constituency.objects.all().filter(state_id = state_id)
+        serialized_data = ConstituencySerializer(data, many='True')
+        return Response(serialized_data.data)
+
 @api_view(['GET', 'POST'])
 def candidates(request):
     if request.method == 'POST':
