@@ -7,7 +7,7 @@ name: Build and deploy Python app to Azure Web App - wepollnow
 on:
   push:
     branches:
-      - stan-refactor
+      - main
   workflow_dispatch:
 
 jobs:
