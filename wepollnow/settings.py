@@ -193,9 +193,3 @@ CSRF_TRUSTED_ORIGINS = ['http://api.wepollnow.com/','https://api.wepollnow.com/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
-# CLOUDINARY_STORAGE = {
-#     'CLOUD_NAME': config("CLOUDINARY_CLOUD_NAME"),
-#     'API_KEY' : config("CLOUDINARY_API_KEY"),
-#     'API_SECRET' : config("CLOUDINARY_API_SECRET")
-# }
