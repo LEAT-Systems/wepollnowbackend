@@ -82,6 +82,9 @@ class CandidateSerializer(serializers.ModelSerializer):
     senatorial_id_id = serializers.IntegerField(write_only=True, required=False)
     senatorial_id = SenatorialSerializer(read_only=True)
 
+    constituency_id_id = serializers.IntegerField(write_only=True, required=False)
+    constituency_id = SenatorialSerializer(read_only=True)
+
     main_candidate = serializers.BooleanField()
     candidate_picture = serializers.ImageField(required=False)
 
@@ -103,6 +106,8 @@ class CandidateSerializer(serializers.ModelSerializer):
             'state_id',
             'senatorial_id',
             'senatorial_id_id',
+            'constituency_id_id',
+            'constituency_id',
             'main_candidate',
             'candidate_picture'
         ]

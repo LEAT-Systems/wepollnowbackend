@@ -119,9 +119,9 @@ def candidates(request):
         serialized_data = CandidateSerializer(data, many='True')
         return Response(serialized_data.data)
 
-class CreateCandidatesView(CreateAPIView):
-    serializer_class = CandidateSerializer
-    queryset = Candidate.objects.all()
+# class CreateCandidatesView(CreateAPIView):
+#     serializer_class = CandidateSerializer
+#     queryset = Candidate.objects.all()
     
 
 class CandidateRetrieveUpdateDelete(GenericAPIView, mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin):
