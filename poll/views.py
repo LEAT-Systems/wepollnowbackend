@@ -173,7 +173,7 @@ class PollResult(APIView):
     def post(self, request):
         try: 
             poll_id = self.request.data["poll_id"]
-            pollParties = Party.objects.filter(poll_parties__id=poll_id).prefetch_related('party_votes', 'party_votes_count').annotate(number_of_votes=Count('party_votes')).order_by('number_of_votes')
+            pollParties = Party.objects.filter(poll_parties__id=poll_id).prefetch_related('party_votes', 'party_votes_count').annotate(number_of_votes=Count('party_votes')).order_by('-number_of_votes')
             
 
         
@@ -248,9 +248,15 @@ class PollResultFilter(GenericAPIView):
 
 class PollDetailResultView(ListAPIView):
     serializer_class = PollPartyResultCandidateSerializer
+    queryset = Poll.objects.all()
+
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context['pk'] = self.kwargs['pk']
+        return context
 
     def get_object(self):
-
         poll = Poll.objects.get(id=self.kwargs['pk'])
         return poll
 

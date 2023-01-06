@@ -1,6 +1,9 @@
 from rest_framework import serializers, fields
 from poll.models import *
 from utilities.models import Party, Candidate, State,Senatorial
+from voters.models import Voter
+
+
 
 class StateSerializer(serializers.ModelSerializer):
     class Meta:
@@ -112,11 +115,6 @@ class PollSerializer(serializers.ModelSerializer):
         ]
     
 
-class PartySerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Party
-        fields = "__all__"
 
 class CreatePollSerializer(serializers.ModelSerializer):
     poll_startDate = serializers.DateTimeField(format="%Y-%m-%dT%H:%M:%S")
@@ -362,14 +360,44 @@ class PollPartyResultFilterSerializer(serializers.ModelSerializer):
             return round(percent, 1)
         except Exception:
             return 0
-        
+
+class VoterSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Voter
+       
+        fields = ["resident_state", "resident_lga"]
+
+
+
+class PartyCandidateSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Candidate
+        fields = ['name']
+     
+
+class PartySerializer(serializers.ModelSerializer):
+    party_candidate = serializers.SerializerMethodField(read_only = True)
+    
+
+    class Meta:
+        model = Party
+        fields = "__all__"
+
+    def get_party_candidate(self, obj):
+        poll_id = self.context["pk"]
+        candidate = PartyCandidateSerializer(obj.party_candidate.filter(poll__id=poll_id,main_candidate=True), many=True).data
+        return candidate
+
+
 class VoteSerializer(serializers.ModelSerializer):
-    voter = serializers.CharField()
+    voter = VoterSerializer(read_only = True)
     party = PartySerializer(read_only = True)
 
     class Meta:
         model = Votes
-        fields = "__all__"
+        fields = ["voter", "party"]
 
 
 class PollPartyResultCandidateSerializer(serializers.ModelSerializer):
@@ -377,4 +405,4 @@ class PollPartyResultCandidateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Poll
-        fields = "__all__"
+        fields = ["poll_name", "poll_category", "poll_votes"]
