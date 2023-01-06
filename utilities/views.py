@@ -3,7 +3,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from utilities.models import Lga, State
 from utilities.serializers import *
-from rest_framework.generics import ListAPIView, CreateAPIView
+from rest_framework.generics import ListAPIView, CreateAPIView, ListCreateAPIView
 from user.permissions import IsAdmin, IsSuperAdmin
 from rest_framework.generics import GenericAPIView
 from rest_framework import mixins
@@ -118,6 +118,11 @@ def candidates(request):
         data = Candidate.objects.all()
         serialized_data = CandidateSerializer(data, many='True')
         return Response(serialized_data.data)
+
+class CreateCandidatesView(CreateAPIView):
+    serializer_class = ContactSerializer
+    queryset = Candidate.objects.all()
+    
 
 class CandidateRetrieveUpdateDelete(GenericAPIView, mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin):
     serializer_class = CandidateSerializer
