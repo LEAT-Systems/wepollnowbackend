@@ -46,7 +46,7 @@ class Candidate(models.Model):
     party = models.ForeignKey(Party, blank=False, null=True, on_delete=models.SET_NULL, related_name="party_candidate")
     state_id = models.ForeignKey(State, blank=True,  null=True, on_delete=models.SET_NULL, related_name="state_candidate")
     senatorial_id = models.ForeignKey(Senatorial, blank=True,  null=True, on_delete=models.SET_NULL, related_name="senatorial_candidate")
-    constituency_id = models.ForeignKey(Constituency, on_delete=models.CASCADE, related_name="constituency_candidate")
+    constituency_id = models.ForeignKey(Constituency, blank=True,  null=True, on_delete=models.CASCADE, related_name="constituency_candidate")
     main_candidate = models.BooleanField(default=True)
     candidate_picture = models.ImageField(upload_to="candidate_pics", default="Account-user.png")
     
