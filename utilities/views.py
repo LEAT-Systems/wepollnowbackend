@@ -120,7 +120,7 @@ def candidates(request):
         return Response(serialized_data.data)
 
 class CreateCandidatesView(CreateAPIView):
-    serializer_class = ContactSerializer
+    serializer_class = CandidateSerializer
     queryset = Candidate.objects.all()
     
 
