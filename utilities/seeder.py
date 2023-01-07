@@ -69,7 +69,7 @@ def clearLga(request):
 def seed_parties(request):
 
     if request.method == 'POST':
-        data =  [('Accord', 'A'),('Action Alliance', 'AA'),('Action Democratic Party', 'ADP'),('Action Peoples Party','APP'),('African Action Congress','ACC'),('African Democratic Congress', 'ADC'),('All Progressives Congress','APC'),('All Progressives Grand Alliance','APGA'),('CAllied Peoples Movement', 'APM'),('Boot Party', 'BP'),('Labour Party', 'LP'),('National Rescue Movement', 'NRM'),('New Nigeria Peoples Party', 'NNPP'),('Peoples Democratic Party', 'PDP'),('Peoples Redemption Party', 'PRP'),('Social Democratic Party', 'SDP'),('Young Progressive Party', 'YPP'),('Zenith Labour Party', 'ZLP')]
+        data =  [('Accord', 'A'),('Action Alliance', 'AA'),('Action Democratic Party', 'ADP'),('Action Peoples Party','APP'),('African Action Congress','AAC'),('African Democratic Congress', 'ADC'),('All Progressives Congress','APC'),('All Progressives Grand Alliance','APGA'),('Allied Peoples Movement', 'APM'),('Boot Party', 'BP'),('Labour Party', 'LP'),('National Rescue Movement', 'NRM'),('New Nigeria Peoples Party', 'NNPP'),('Peoples Democratic Party', 'PDP'),('Peoples Redemption Party', 'PRP'),('Social Democratic Party', 'SDP'),('Young Progressive Party', 'YPP'),('Zenith Labour Party', 'ZLP')]
         for i in data:
             json_data = {"name" : i[0], "abbr" : i[1]}
             serialized_data = PartySerializer(data=json_data)
