@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from poll.serializers import SurveyCategoryCreateSerializer
 from utilities.models import Lga, State
 from utilities.serializers import *
 
@@ -75,4 +76,13 @@ def seed_parties(request):
             serialized_data = PartySerializer(data=json_data)
             if serialized_data.is_valid():
                 serialized_data.save()
+        return Response(serialized_data.data)
+
+@api_view(['POST'])
+def seed_survey(request):
+
+    if request.method == 'POST':
+        serialized_data = SurveyCategoryCreateSerializer(data = {"surveyName" : "Others" })
+        if serialized_data.is_valid():
+            serialized_data.save()
         return Response(serialized_data.data)
