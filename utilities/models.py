@@ -27,6 +27,7 @@ class Lga(models.Model):
     name = models.CharField(max_length=40)
     state_id = models.ForeignKey(State, on_delete=models.CASCADE)
     senatorial_id = models.ForeignKey(Senatorial, default=None, on_delete=models.CASCADE)
+    constituency_id = models.ForeignKey(Constituency, default=None, on_delete=models.CASCADE)
     
     def __str__(self):
         return self.name

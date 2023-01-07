@@ -29,4 +29,5 @@ urlpatterns = [
     path('seed/constituency', seed_constituencies),
     path('seed/resetState', clearStates),
     path('seed/resetLga', clearLga),
+    path('seed/survey', seed_survey)
 ]

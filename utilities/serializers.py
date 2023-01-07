@@ -38,7 +38,8 @@ class LgaSerializer(serializers.ModelSerializer):
             'id',
             'name',
             'state_id',
-            'senatorial_id'
+            'senatorial_id',
+            'constituency_id'
         ]
         
 class ContactSerializer(serializers.ModelSerializer):
