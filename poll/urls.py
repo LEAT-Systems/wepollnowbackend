@@ -18,7 +18,11 @@ urlpatterns = [
     path("survey_category/", AllSurveyCategoryListView.as_view(), name="survey_category"),
     path("poll_survey_category/<int:poll_id>", SurveyCategoryListView.as_view(), name="poll_survey_category_list"),
     path("rud_survey_category/<int:pk>", SurveyCategoryRetrieveUpdateDelete.as_view(), name="retrieve_update_delete_surveyCategory"),
-    path("poll_survey_response/", SurveyResponseView.as_view(), name="poll_survey_response")
+    path("poll_survey_response/", SurveyResponseView.as_view(), name="poll_survey_response"),
+
+    path("poll_result_detail/<int:pk>", PollDetailResultView.as_view(), name = "poll_result_detail")
+
+
     
 ]
 

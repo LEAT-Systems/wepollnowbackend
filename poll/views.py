@@ -17,6 +17,9 @@ from rest_framework.filters import OrderingFilter
 from rest_framework.generics import GenericAPIView
 from rest_framework import mixins
 
+from utilities.pagination import CustomPagination
+
+
 
 class SurveyCategoryView(CreateAPIView):
     queryset = SurveyCategory.objects.all()
@@ -61,6 +64,7 @@ class PollCategoryList(ListAPIView):
 class CandidatesList(ListAPIView):
     serializer_class = CandidateSerializer
     queryset = Candidate.objects.all()
+    pagination_class = CustomPagination
 
 class Polls(CreateAPIView):
     serializer_class = CreatePollSerializer
@@ -84,7 +88,7 @@ class PollRetrieveUpdateDelete(GenericAPIView, mixins.RetrieveModelMixin, mixins
 class AllPollsList(ListAPIView):
     serializer_class = PollSerializer
     queryset = Poll.objects.all()
-        
+    pagination_class = CustomPagination 
 
 class GetPollsForVoters(APIView):
     serializer_class = PollSerializer
@@ -135,6 +139,7 @@ class GetPollPartiesAndCandidates(APIView):
 class GetPartiesAndCandidatesForPollCategory(APIView): 
     serializer_class  = PollCategoryPartySerializer
 
+
     def post(self, request):
         try:
             pollcategory_id = self.request.data["pollcategory_id"] 
@@ -169,11 +174,13 @@ class GetPartiesAndCandidatesForPollCategory(APIView):
 
 class PollResult(APIView):
     serializer_class  = PollPartyResultSerializer
+    pagination_class = CustomPagination
+
 
     def post(self, request):
         try: 
             poll_id = self.request.data["poll_id"]
-            pollParties = Party.objects.filter(poll_parties__id=poll_id).prefetch_related('party_votes', 'party_votes_count').annotate(number_of_votes=Count('party_votes')).order_by('number_of_votes')
+            pollParties = Party.objects.filter(poll_parties__id=poll_id).prefetch_related('party_votes', 'party_votes_count').annotate(number_of_votes=Count('party_votes')).order_by('-number_of_votes')
             
 
         
@@ -205,6 +212,7 @@ class PollResult(APIView):
 class PollResultFilter(GenericAPIView):
     serializer_class  = PollPartyResultFilterSerializer
     filter_backends = [ OrderingFilter]
+    pagination_class = CustomPagination
     #filter_class = PartyVoteFilters
     #ordering_fields = ('name')
     ordering = ('-id')
@@ -246,6 +254,21 @@ class PollResultFilter(GenericAPIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
+class PollDetailResultView(ListAPIView):
+    serializer_class = PollPartyResultCandidateSerializer
+    queryset = Poll.objects.all()
+    pagination_class = CustomPagination
+
+
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context['pk'] = self.kwargs['pk']
+        return context
+
+    def get_object(self):
+        poll = Poll.objects.get(id=self.kwargs['pk'])
+        return poll
 
           
 
