@@ -23,6 +23,7 @@ class Constituency(models.Model):
     def __str__(self):
         return self.name
 
+
 class Lga(models.Model):
     name = models.CharField(max_length=40)
     state_id = models.ForeignKey(State, on_delete=models.CASCADE)

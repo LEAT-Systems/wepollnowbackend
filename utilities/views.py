@@ -8,6 +8,8 @@ from user.permissions import IsAdmin, IsSuperAdmin
 from rest_framework.generics import GenericAPIView
 from rest_framework import mixins
 from rest_framework.request import Request
+from utilities.pagination import CustomPagination
+
 
 
 @api_view(['GET', 'POST'])
@@ -104,24 +106,26 @@ def constituency_by_state(request, state_id):
         serialized_data = ConstituencySerializer(data, many='True')
         return Response(serialized_data.data)
 
-@api_view(['GET', 'POST'])
-def candidates(request):
-    if request.method == 'POST':
-        serialized_data = CandidateSerializer(data=request.data)
-        if serialized_data.is_valid():
-            serialized_data.save()
-            return Response(serialized_data.data)
-        else:
-            return Response(serialized_data.errors)
+# @api_view(['GET', 'POST'])
+# def candidates(request):
+#     if request.method == 'POST':
+#         serialized_data = CandidateSerializer(data=request.data)
+#         if serialized_data.is_valid():
+#             serialized_data.save()
+#             return Response(serialized_data.data)
+#         else:
+#             return Response(serialized_data.errors)
 
-    if request.method == 'GET':
-        data = Candidate.objects.all()
-        serialized_data = CandidateSerializer(data, many='True')
-        return Response(serialized_data.data)
+#     if request.method == 'GET':
+#         data = Candidate.objects.all()
+#         serialized_data = CandidateSerializer(data, many='True')
+#         return Response(serialized_data.data)
 
-# class CreateCandidatesView(CreateAPIView):
-#     serializer_class = CandidateSerializer
-#     queryset = Candidate.objects.all()
+class CreateCandidatesView(ListCreateAPIView):
+    serializer_class = CandidateSerializer
+    queryset = Candidate.objects.all()
+    pagination_class = CustomPagination
+    
     
 
 class CandidateRetrieveUpdateDelete(GenericAPIView, mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin):
@@ -145,6 +149,7 @@ class CreateContact(CreateAPIView):
 class ListContact(ListAPIView):
     serializer_class = ContactSerializer
     queryset = Contact.objects.all()
+    pagination_class = CustomPagination
     #permission_classes = [IsAdmin]
     
     
@@ -166,6 +171,7 @@ def subscriber(request):
 class PartyList(ListAPIView):
     serializer_class = PartySerializer
     queryset = Party.objects.all()
+    pagination_class = CustomPagination
 
 
 

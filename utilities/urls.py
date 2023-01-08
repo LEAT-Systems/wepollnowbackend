@@ -18,7 +18,7 @@ urlpatterns = [
 
     path('subscriber/', subscriber),
 
-    path('candidates/', candidates),
+    path('candidates/', CreateCandidatesView.as_view(), name="candidates"),
     path('rud_candidate/<int:pk>', CandidateRetrieveUpdateDelete.as_view(), name="retrieve_update_delete_candidate"),
 
     #Seeders
