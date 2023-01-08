@@ -178,7 +178,7 @@ def subscriber(request):
 class PartyList(ListAPIView):
     serializer_class = PartySerializer
     queryset = Party.objects.all()
-    pagination_class = CustomPagination
+    #pagination_class = CustomPagination
 
 
 
