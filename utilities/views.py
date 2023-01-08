@@ -105,6 +105,13 @@ def constituency_by_state(request, state_id):
         data = Constituency.objects.all().filter(state_id = state_id)
         serialized_data = ConstituencySerializer(data, many='True')
         return Response(serialized_data.data)
+    
+@api_view(['GET'])
+def constituency(request):
+    if request.method == 'GET':
+        data = Constituency.objects.all()
+        serialized_data = ConstituencySerializer(data, many='True')
+        return Response(serialized_data.data)
 
 # @api_view(['GET', 'POST'])
 # def candidates(request):
@@ -171,7 +178,7 @@ def subscriber(request):
 class PartyList(ListAPIView):
     serializer_class = PartySerializer
     queryset = Party.objects.all()
-    pagination_class = CustomPagination
+    #pagination_class = CustomPagination
 
 
 
