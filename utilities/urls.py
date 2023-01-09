@@ -31,6 +31,7 @@ urlpatterns = [
     path('seed/resetState', clearStates),
     path('seed/resetLga', clearLga),
     path('seed/resetSen', clearSen),
+    path('seed/resetParty', clearParty),
     path('seed/survey', seed_survey),
     path('seed/pollCategory', seed_poll_category)
 ]

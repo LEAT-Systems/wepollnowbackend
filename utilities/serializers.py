@@ -68,7 +68,12 @@ class PartySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Party
-        fields = "__all__"
+        fields = [
+            'id',
+            'name',
+            'abbr',
+            'logo'
+        ]
 
 class CandidateSerializer(serializers.ModelSerializer): 
     poll_category_id = serializers.IntegerField(write_only=True)
