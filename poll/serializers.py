@@ -90,6 +90,17 @@ class PollCategorySerializer(serializers.ModelSerializer):
            
         ]
 
+class PollHitsSerializer(serializers.ModelSerializer):
+    view_hits = serializers.SerializerMethodField(read_only=True)
+    class Meta:
+        model = Poll
+        fields = ['view_hits']
+    
+    def get_view_hits(self, obj):
+        try:
+            return obj.hit_count.hits
+        except:
+            pass
 
 
 class PollSerializer(serializers.ModelSerializer):
@@ -186,6 +197,10 @@ class PollSerializer(serializers.ModelSerializer):
     poll_category = PollCategorySerializer(read_only=True)
     party = serializers.PrimaryKeyRelatedField(queryset = Party.objects.all(), many = True, write_only=True)
     candidate = serializers.ListField(child=serializers.IntegerField(), write_only=True)
+
+    
+
+
 
     
     class Meta:
