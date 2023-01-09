@@ -4,7 +4,6 @@ from voters.models import *
 from django.utils import timezone
 from django.core.exceptions import ValidationError
 
-from hitcount.models import HitCountMixin
 
 
 # Create your models here.
@@ -17,7 +16,7 @@ class PollCategory(models.Model):
         return self.title
 
 
-class Poll(models.Model, HitCountMixin):
+class Poll(models.Model):
     poll_category = models.ForeignKey(PollCategory, blank=False, on_delete=models.CASCADE)
     poll_name = models.CharField(max_length=40, default="Presidential Election")
     poll_date = models.DateTimeField(auto_now_add='True')

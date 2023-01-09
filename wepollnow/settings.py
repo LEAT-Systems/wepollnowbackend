@@ -57,7 +57,6 @@ INSTALLED_APPS = [
     
     #third party apps
     'django_filters',
-    'hitcount',
     
     #'cloudinary_storage',
     
@@ -194,6 +193,4 @@ CSRF_TRUSTED_ORIGINS = ['http://api.wepollnow.com/','https://api.wepollnow.com/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-HITCOUNT_KEEP_HIT_ACTIVE = { 'days': 1 }
-HITCOUNT_HITS_PER_IP_LIMIT = 1
 
