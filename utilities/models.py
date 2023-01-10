@@ -2,7 +2,14 @@ from django.db import models
 
 from poll.models import Poll, PollCategory
 
-# Create your models here.
+class Hit(models.Model):
+    ip = models.GenericIPAddressField(default= '')
+    date = models.DateField(auto_now_add=True)
+
+    def __str__(self):
+        return str(self.ip)
+
+
 class State(models.Model):
     name = models.CharField(max_length= 50)
 

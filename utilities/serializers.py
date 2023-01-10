@@ -4,6 +4,22 @@ from utilities.models import *
 from poll.serializers import PollCategorySerializer
 
 
+
+class WebHitsSerializer(serializers.ModelSerializer):
+    view_hits = serializers.SerializerMethodField(read_only=True)
+    class Meta:
+        model = Hit
+        fields = ['view_hits', 'ip', 'date']
+
+    def validate(self, attrs):
+        return super().validate(attrs)
+    
+    def get_view_hits(self, obj):
+        try:
+            return obj.hit_count.hits
+        except:
+            pass
+
 class StateSerializer(serializers.ModelSerializer):
     class Meta:
         model = State

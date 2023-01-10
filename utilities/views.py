@@ -3,12 +3,16 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from utilities.models import Lga, State
 from utilities.serializers import *
-from rest_framework.generics import ListAPIView, CreateAPIView, ListCreateAPIView
+from rest_framework.generics import GenericAPIView, ListAPIView, CreateAPIView, ListCreateAPIView, RetrieveAPIView
 from user.permissions import IsAdmin, IsSuperAdmin
-from rest_framework.generics import GenericAPIView
 from rest_framework import mixins
 from rest_framework.request import Request
 from utilities.pagination import CustomPagination
+from rest_framework.views import APIView
+from datetime import date
+from rest_framework import status
+
+
 
 
 
@@ -181,4 +185,37 @@ class PartyList(ListAPIView):
     #pagination_class = CustomPagination
 
 
+
+def get_client_ip(request):
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[0]
+    else:
+        ip = request.META.get('REMOTE_ADDR')
+    return ip
+
+class Hitcountview(APIView):
+
+    def post(self):
+        ip = get_client_ip(self.request)
+        hit = Hit.objects.filter(ip=ip, date = date.today())
+
+        if hit.exists():
+            return Response(status=status.HTTP_200_OK)
+        else:
+            newHit = Hit.objects.create(ip=ip)
+            return Response({"hhh": "nnnn"}, status=status.HTTP_201_CREATED)
+        
+
+# class Hitcountview(RetrieveAPIView):
+#     serializer_class =WebHitsSerializer
+#     queryset = Hit.objects.all()
+
+#     def get_object(self):
+#         print(date.today())
+#         return Hit.objects.get(id=1)
+    
+
+
+    
 

@@ -57,7 +57,6 @@ INSTALLED_APPS = [
     
     #third party apps
     'django_filters',
-    'hitcount',
     
     #'cloudinary_storage',
     
@@ -124,8 +123,12 @@ WSGI_APPLICATION = 'wepollnow.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'wepollnow_db',
+        'USER': 'stan',
+        'PASSWORD': '_StanLea_01',
+        'HOST': '127.0.0.1',
+        'PORT': '5432'
     }
 }
 
@@ -193,7 +196,4 @@ CSRF_TRUSTED_ORIGINS = ['http://api.wepollnow.com/','https://api.wepollnow.com/'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-HITCOUNT_KEEP_HIT_ACTIVE = { 'days': 1 }
-HITCOUNT_HITS_PER_IP_LIMIT = 1
 

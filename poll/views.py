@@ -182,8 +182,6 @@ class PollResult(APIView):
         try: 
             poll_id = self.request.data["poll_id"]
             pollParties = Party.objects.filter(poll_parties__id=poll_id).prefetch_related('party_votes', 'party_votes_count').annotate(number_of_votes=Count('party_votes')).order_by('-number_of_votes')
-            
-
         
             context = {
                 "poll_id" : poll_id
@@ -271,12 +269,7 @@ class PollDetailResultView(ListAPIView):
         poll = Poll.objects.get(id=self.kwargs['pk'])
         return poll
 
-class Hitcountview(RetrieveAPIView):
-    serializer_class =PollHitsSerializer
-    queryset = Poll.objects.all()
 
-    def get_object(self):
-        return super().get_object()
           
 
 
