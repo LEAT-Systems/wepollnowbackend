@@ -16,6 +16,7 @@ urlpatterns = [
     
     path('contact/', CreateContact.as_view(), name="contact"),
     path('contact_list/', ListContact.as_view(), name="contacts_list"),
+    path('hits/', Hitcountview.as_view(), name='hits'),
 
     path('subscriber/', subscriber),
 

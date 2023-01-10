@@ -193,4 +193,3 @@ CSRF_TRUSTED_ORIGINS = ['http://api.wepollnow.com/','https://api.wepollnow.com/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
