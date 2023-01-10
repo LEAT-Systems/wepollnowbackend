@@ -5,7 +5,7 @@ from rest_framework.decorators import api_view
 from rest_framework.request import Request
 from poll.models import *
 from poll.serializers import *
-from rest_framework.generics import ListAPIView, CreateAPIView, ListCreateAPIView 
+from rest_framework.generics import ListAPIView, CreateAPIView, ListCreateAPIView, RetrieveAPIView
 from voters.models import Voter
 from django.db.models import Q
 from utilities.models import Lga, Party, Candidate, State, Senatorial
@@ -106,8 +106,9 @@ class GetPollsForVoters(APIView):
                 else:
                     lga = Lga.objects.get(id=voter.resident_lga.id)
                     senatorial_id = lga.senatorial_id
+                    constituency_id = lga.constituency_id
                     
-                    polls = Poll.objects.filter(Q(poll_category__id = 1 ) | (Q(poll_category__id=3) & Q(poll_senatorial_district__id=senatorial_id.id))  | (Q(poll_category__id=2) & Q(poll_state__id=voter.resident_state.id)))
+                    polls = Poll.objects.filter(Q(poll_category__id = 1 ) | (Q(poll_category__id=3) & Q(poll_senatorial_district__id=senatorial_id.id))  | (Q(poll_category__id=2) & Q(poll_state__id=voter.resident_state.id)) | (Q(poll_category__id=4) & Q(poll_constituency__id=constituency_id.id)))
                     serializer = PollSerializer(polls, many=True)
                     return Response(serializer.data, status=status.HTTP_200_OK)
             else:
@@ -270,6 +271,12 @@ class PollDetailResultView(ListAPIView):
         poll = Poll.objects.get(id=self.kwargs['pk'])
         return poll
 
+class Hitcountview(RetrieveAPIView):
+    serializer_class =PollHitsSerializer
+    queryset = Poll.objects.all()
+
+    def get_object(self):
+        return super().get_object()
           
 
 
