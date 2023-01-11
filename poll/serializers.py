@@ -443,11 +443,13 @@ class PollStatusCountSerializer(serializers.ModelSerializer):
     scheduledPolls = serializers.SerializerMethodField(read_only=True)
     ongoingPolls = serializers.SerializerMethodField(read_only=True)
     concludedPolls = serializers.SerializerMethodField(read_only=True)
+    allUsers = serializers.SerializerMethodField(read_only=True)
+    newUsers = serializers.SerializerMethodField(read_only=True)
 
 
     class Meta:
         model = PollCategory
-        fields = ['scheduledPolls', 'ongoingPolls', 'concludedPolls']
+        fields = ['scheduledPolls', 'ongoingPolls', 'concludedPolls', 'allUsers', 'newUsers']
 
     def get_scheduledPolls(self, obj):
         upcoming = Poll.objects.filter(poll_startDate__date__gt = date.today()).count()
@@ -460,3 +462,11 @@ class PollStatusCountSerializer(serializers.ModelSerializer):
     def get_ongoingPolls(self,obj):
         ongoing = Poll.objects.filter(poll_startDate__date__lte = date.today(), poll_endDate__date__gte = date.today()).count()
         return ongoing
+    
+    def get_allUsers(self,obj):
+        voter = Voter.objects.all().count()
+        return voter
+
+    def get_newUsers(self,obj):
+        voter = Voter.objects.filter(date_reg__date = date.today()).count()
+        return voter
