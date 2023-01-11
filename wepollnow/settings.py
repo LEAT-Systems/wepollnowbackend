@@ -126,7 +126,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'wepollnow_db',
         'USER': 'stan',
-        'PASSWORD': '_StanLea_01',
+        'PASSWORD': 'stan@123',
         'HOST': '127.0.0.1',
         'PORT': '5432'
     }
