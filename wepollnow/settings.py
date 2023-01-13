@@ -13,7 +13,7 @@ import os
 from pathlib import Path
 from datetime import timedelta
 from decouple import config
-
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -132,6 +132,8 @@ DATABASES = {
     }
 }
 
+
+DATABASES['default'] = dj_database_url.parse('postgresql://postgres:uIFWyxfB9TB2S4uU8OmH@containers-us-west-165.railway.app:7384/railway')
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
