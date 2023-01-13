@@ -3,11 +3,17 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from utilities.models import Lga, State
 from utilities.serializers import *
-from rest_framework.generics import ListAPIView, CreateAPIView, ListCreateAPIView
+from rest_framework.generics import GenericAPIView, ListAPIView, CreateAPIView, ListCreateAPIView, RetrieveAPIView
 from user.permissions import IsAdmin, IsSuperAdmin
-from rest_framework.generics import GenericAPIView
 from rest_framework import mixins
 from rest_framework.request import Request
+from utilities.pagination import CustomPagination
+from rest_framework.views import APIView
+from datetime import date
+from rest_framework import status
+
+
+
 
 
 @api_view(['GET', 'POST'])
@@ -103,25 +109,34 @@ def constituency_by_state(request, state_id):
         data = Constituency.objects.all().filter(state_id = state_id)
         serialized_data = ConstituencySerializer(data, many='True')
         return Response(serialized_data.data)
-
-@api_view(['GET', 'POST'])
-def candidates(request):
-    if request.method == 'POST':
-        serialized_data = CandidateSerializer(data=request.data)
-        if serialized_data.is_valid():
-            serialized_data.save()
-            return Response(serialized_data.data)
-        else:
-            return Response(serialized_data.errors)
-
+    
+@api_view(['GET'])
+def constituency(request):
     if request.method == 'GET':
-        data = Candidate.objects.all()
-        serialized_data = CandidateSerializer(data, many='True')
+        data = Constituency.objects.all()
+        serialized_data = ConstituencySerializer(data, many='True')
         return Response(serialized_data.data)
 
-# class CreateCandidatesView(CreateAPIView):
-#     serializer_class = CandidateSerializer
-#     queryset = Candidate.objects.all()
+# @api_view(['GET', 'POST'])
+# def candidates(request):
+#     if request.method == 'POST':
+#         serialized_data = CandidateSerializer(data=request.data)
+#         if serialized_data.is_valid():
+#             serialized_data.save()
+#             return Response(serialized_data.data)
+#         else:
+#             return Response(serialized_data.errors)
+
+#     if request.method == 'GET':
+#         data = Candidate.objects.all()
+#         serialized_data = CandidateSerializer(data, many='True')
+#         return Response(serialized_data.data)
+
+class CreateCandidatesView(ListCreateAPIView):
+    serializer_class = CandidateSerializer
+    queryset = Candidate.objects.all()
+    pagination_class = CustomPagination
+    
     
 
 class CandidateRetrieveUpdateDelete(GenericAPIView, mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin):
@@ -145,6 +160,7 @@ class CreateContact(CreateAPIView):
 class ListContact(ListAPIView):
     serializer_class = ContactSerializer
     queryset = Contact.objects.all()
+    pagination_class = CustomPagination
     #permission_classes = [IsAdmin]
     
     
@@ -166,6 +182,40 @@ def subscriber(request):
 class PartyList(ListAPIView):
     serializer_class = PartySerializer
     queryset = Party.objects.all()
+    #pagination_class = CustomPagination
 
 
+
+def get_client_ip(request):
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[0]
+    else:
+        ip = request.META.get('REMOTE_ADDR')
+    return ip
+
+class Hitcountview(APIView):
+
+    def post(self):
+        ip = get_client_ip(self.request)
+        hit = Hit.objects.filter(ip=ip, date = date.today())
+
+        if hit.exists():
+            return Response(status=status.HTTP_200_OK)
+        else:
+            newHit = Hit.objects.create(ip=ip)
+            return Response({"hhh": "nnnn"}, status=status.HTTP_201_CREATED)
+        
+
+# class Hitcountview(RetrieveAPIView):
+#     serializer_class =WebHitsSerializer
+#     queryset = Hit.objects.all()
+
+#     def get_object(self):
+#         print(date.today())
+#         return Hit.objects.get(id=1)
+    
+
+
+    
 

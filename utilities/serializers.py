@@ -4,6 +4,22 @@ from utilities.models import *
 from poll.serializers import PollCategorySerializer
 
 
+
+class WebHitsSerializer(serializers.ModelSerializer):
+    view_hits = serializers.SerializerMethodField(read_only=True)
+    class Meta:
+        model = Hit
+        fields = ['view_hits', 'ip', 'date']
+
+    def validate(self, attrs):
+        return super().validate(attrs)
+    
+    def get_view_hits(self, obj):
+        try:
+            return obj.hit_count.hits
+        except:
+            pass
+
 class StateSerializer(serializers.ModelSerializer):
     class Meta:
         model = State
@@ -38,7 +54,8 @@ class LgaSerializer(serializers.ModelSerializer):
             'id',
             'name',
             'state_id',
-            'senatorial_id'
+            'senatorial_id',
+            'constituency_id'
         ]
         
 class ContactSerializer(serializers.ModelSerializer):
@@ -67,7 +84,12 @@ class PartySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Party
-        fields = "__all__"
+        fields = [
+            'id',
+            'name',
+            'abbr',
+            'logo'
+        ]
 
 class CandidateSerializer(serializers.ModelSerializer): 
     poll_category_id = serializers.IntegerField(write_only=True)

@@ -5,7 +5,7 @@ from rest_framework.decorators import api_view
 from rest_framework.request import Request
 from poll.models import *
 from poll.serializers import *
-from rest_framework.generics import ListAPIView, CreateAPIView, ListCreateAPIView 
+from rest_framework.generics import ListAPIView, CreateAPIView, ListCreateAPIView, RetrieveAPIView
 from voters.models import Voter
 from django.db.models import Q
 from utilities.models import Lga, Party, Candidate, State, Senatorial
@@ -16,6 +16,9 @@ from django.db.models import Count
 from rest_framework.filters import OrderingFilter
 from rest_framework.generics import GenericAPIView
 from rest_framework import mixins
+
+from utilities.pagination import CustomPagination
+
 
 
 class SurveyCategoryView(CreateAPIView):
@@ -61,6 +64,7 @@ class PollCategoryList(ListAPIView):
 class CandidatesList(ListAPIView):
     serializer_class = CandidateSerializer
     queryset = Candidate.objects.all()
+    pagination_class = CustomPagination
 
 class Polls(CreateAPIView):
     serializer_class = CreatePollSerializer
@@ -84,7 +88,7 @@ class PollRetrieveUpdateDelete(GenericAPIView, mixins.RetrieveModelMixin, mixins
 class AllPollsList(ListAPIView):
     serializer_class = PollSerializer
     queryset = Poll.objects.all()
-        
+    pagination_class = CustomPagination 
 
 class GetPollsForVoters(APIView):
     serializer_class = PollSerializer
@@ -102,8 +106,9 @@ class GetPollsForVoters(APIView):
                 else:
                     lga = Lga.objects.get(id=voter.resident_lga.id)
                     senatorial_id = lga.senatorial_id
+                    constituency_id = lga.constituency_id
                     
-                    polls = Poll.objects.filter(Q(poll_category__id = 1 ) | (Q(poll_category__id=3) & Q(poll_senatorial_district__id=senatorial_id.id))  | (Q(poll_category__id=2) & Q(poll_state__id=voter.resident_state.id)))
+                    polls = Poll.objects.filter(Q(poll_category__id = 1 ) | (Q(poll_category__id=3) & Q(poll_senatorial_district__id=senatorial_id.id))  | (Q(poll_category__id=2) & Q(poll_state__id=voter.resident_state.id)) | (Q(poll_category__id=4) & Q(poll_constituency__id=constituency_id.id)))
                     serializer = PollSerializer(polls, many=True)
                     return Response(serializer.data, status=status.HTTP_200_OK)
             else:
@@ -134,6 +139,7 @@ class GetPollPartiesAndCandidates(APIView):
 
 class GetPartiesAndCandidatesForPollCategory(APIView): 
     serializer_class  = PollCategoryPartySerializer
+
 
     def post(self, request):
         try:
@@ -169,13 +175,13 @@ class GetPartiesAndCandidatesForPollCategory(APIView):
 
 class PollResult(APIView):
     serializer_class  = PollPartyResultSerializer
+    pagination_class = CustomPagination
+
 
     def post(self, request):
         try: 
             poll_id = self.request.data["poll_id"]
             pollParties = Party.objects.filter(poll_parties__id=poll_id).prefetch_related('party_votes', 'party_votes_count').annotate(number_of_votes=Count('party_votes')).order_by('-number_of_votes')
-            
-
         
             context = {
                 "poll_id" : poll_id
@@ -205,6 +211,7 @@ class PollResult(APIView):
 class PollResultFilter(GenericAPIView):
     serializer_class  = PollPartyResultFilterSerializer
     filter_backends = [ OrderingFilter]
+    pagination_class = CustomPagination
     #filter_class = PartyVoteFilters
     #ordering_fields = ('name')
     ordering = ('-id')
@@ -249,6 +256,8 @@ class PollResultFilter(GenericAPIView):
 class PollDetailResultView(ListAPIView):
     serializer_class = PollPartyResultCandidateSerializer
     queryset = Poll.objects.all()
+    pagination_class = CustomPagination
+
 
 
     def get_serializer_context(self):
@@ -259,6 +268,7 @@ class PollDetailResultView(ListAPIView):
     def get_object(self):
         poll = Poll.objects.get(id=self.kwargs['pk'])
         return poll
+
 
           
 

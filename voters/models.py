@@ -22,6 +22,7 @@ class Voter(models.Model):
     diaspora_voter = models.BooleanField(default="False")
     property_status = models.IntegerField()
     country = models.CharField(max_length=10, default="NG")
+    date_reg = models.DateTimeField(auto_now_add='True')
 
 
 

@@ -12,13 +12,15 @@ urlpatterns = [
     path('lga/<int:state_id>', lga_by_state),
     path('lga/senatorial/<int:senatorial_id>', lga_by_senatorial),
     path('constituency/<int:state_id>', constituency_by_state),
+    path('constituency/', constituency),
     
     path('contact/', CreateContact.as_view(), name="contact"),
     path('contact_list/', ListContact.as_view(), name="contacts_list"),
+    path('hits/', Hitcountview.as_view(), name='hits'),
 
     path('subscriber/', subscriber),
 
-    path('candidates/', candidates),
+    path('candidates/', CreateCandidatesView.as_view(), name="candidates"),
     path('rud_candidate/<int:pk>', CandidateRetrieveUpdateDelete.as_view(), name="retrieve_update_delete_candidate"),
 
     #Seeders
@@ -29,4 +31,8 @@ urlpatterns = [
     path('seed/constituency', seed_constituencies),
     path('seed/resetState', clearStates),
     path('seed/resetLga', clearLga),
+    path('seed/resetSen', clearSen),
+    path('seed/resetParty', clearParty),
+    path('seed/survey', seed_survey),
+    path('seed/pollCategory', seed_poll_category)
 ]

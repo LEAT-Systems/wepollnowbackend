@@ -92,6 +92,7 @@ class PollCategorySerializer(serializers.ModelSerializer):
 
 
 
+
 class PollSerializer(serializers.ModelSerializer):
     poll_category = PollCategorySerializer(read_only = True)
     poll_date =  serializers.DateTimeField()
@@ -259,17 +260,45 @@ class PartyVoteSerializer(serializers.ModelSerializer):
         model = VoteCount
         fields = ['vote_count']
 
-
+class PollDetailSerializer(serializers.ModelSerializer):
+    poll_category = PollCategorySerializer(read_only = True)
+    poll_date =  serializers.DateTimeField()
+    poll_state_name = serializers.CharField(source='poll_state')
+    poll_senatorial_district_name = serializers.CharField(source="poll_senatorial_district")
+    class Meta:
+        model = Poll
+        fields = [
+            'id',
+            'poll_category',
+            'poll_name',
+            'poll_state',
+            'poll_state_name',
+            'poll_date',
+            'poll_senatorial_district',
+            'poll_senatorial_district_name',
+            'poll_startDate',
+            'poll_endDate',
+            'status'
+            
+        ]
 
 class PollPartyResultSerializer(serializers.ModelSerializer):
     voteCount = serializers.SerializerMethodField(read_only=True)
     partyCandidate = serializers.SerializerMethodField(read_only=True)
     votePercent = serializers.SerializerMethodField()
+    poll_details = serializers.SerializerMethodField(read_only=True)
 
 
     class Meta:
         model = Party
         fields = "__all__"
+
+
+    def get_poll_details(self,obj):
+        poll_id = self.context["poll_id"]
+        poll = PollDetailSerializer(Poll.objects.get(id=poll_id)).data
+        return poll
+
 
     def get_voteCount(self,obj):
         poll_id = self.context["poll_id"]

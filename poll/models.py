@@ -5,6 +5,7 @@ from django.utils import timezone
 from django.core.exceptions import ValidationError
 
 
+
 # Create your models here.
 class PollCategory(models.Model):
     title = models.CharField(max_length=30)

@@ -2,7 +2,14 @@ from django.db import models
 
 from poll.models import Poll, PollCategory
 
-# Create your models here.
+class Hit(models.Model):
+    ip = models.GenericIPAddressField(default= '')
+    date = models.DateField(auto_now_add=True)
+
+    def __str__(self):
+        return str(self.ip)
+
+
 class State(models.Model):
     name = models.CharField(max_length= 50)
 
@@ -23,10 +30,12 @@ class Constituency(models.Model):
     def __str__(self):
         return self.name
 
+
 class Lga(models.Model):
     name = models.CharField(max_length=40)
     state_id = models.ForeignKey(State, on_delete=models.CASCADE)
     senatorial_id = models.ForeignKey(Senatorial, default=None, on_delete=models.CASCADE)
+    constituency_id = models.ForeignKey(Constituency, default=None, on_delete=models.CASCADE)
     
     def __str__(self):
         return self.name
@@ -34,7 +43,7 @@ class Lga(models.Model):
 class Party(models.Model):
     name = models.CharField(max_length=40)
     abbr = models.CharField( blank=True, null=True, max_length=8)
-    logo = models.ImageField(default='Account-user.png', upload_to='party_pictures')
+    logo = models.CharField(max_length=100)
    
     def __str__(self):
         return self.name
