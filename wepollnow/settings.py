@@ -133,7 +133,7 @@ DATABASES = {
 }
 
 
-DATABASES['default'] = dj_database_url.parse('postgresql://postgres:uIFWyxfB9TB2S4uU8OmH@containers-us-west-165.railway.app:7384/railway')
+DATABASES['default'] = dj_database_url.parse('postgresql://postgres:NB3dhoNrxaBDZiuCYnPy@containers-us-west-58.railway.app:6890/railway')
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
