@@ -135,7 +135,7 @@ def constituency(request):
 class CreateCandidatesView(ListCreateAPIView):
     serializer_class = CandidateSerializer
     queryset = Candidate.objects.all()
-    pagination_class = CustomPagination
+    #pagination_class = CustomPagination
     
     
 
@@ -160,7 +160,7 @@ class CreateContact(CreateAPIView):
 class ListContact(ListAPIView):
     serializer_class = ContactSerializer
     queryset = Contact.objects.all()
-    pagination_class = CustomPagination
+    #pagination_class = CustomPagination
     #permission_classes = [IsAdmin]
     
     
