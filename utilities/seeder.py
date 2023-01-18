@@ -22,7 +22,7 @@ def seed_states(request):
 @api_view(['POST'])
 def seed_lga(request):
         if request.method == 'POST': 
-            data = [(43,'Abaji',15,359),(43,'Bwari',15,360),(43,'Gwagwalada',15,359),(43,'Kuje',15,359),(43,'Kwali',15,359),(43,'Municipal',15,360)]
+            data = [(43,'Abaji',15,357),(43,'Bwari',15,358),(43,'Gwagwalada',15,357),(43,'Kuje',15,357),(43,'Kwali',15,357),(43,'Municipal',15,358)]
             for i in data:
                 json_data = {"name" : i[1], "state_id" : i[2], "senatorial_id" : i[0], "constituency_id" : i[3]}
                 serialized_data = LgaSerializer(data=json_data)
