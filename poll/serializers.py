@@ -2,6 +2,8 @@ from rest_framework import serializers, fields
 from poll.models import *
 from utilities.models import Party, Candidate, State,Senatorial
 from voters.models import Voter
+from datetime import date
+from datetime import datetime
 
 
 
@@ -281,7 +283,7 @@ class PollDetailSerializer(serializers.ModelSerializer):
             'status'
             
         ]
-
+ 
 class PollPartyResultSerializer(serializers.ModelSerializer):
     voteCount = serializers.SerializerMethodField(read_only=True)
     partyCandidate = serializers.SerializerMethodField(read_only=True)
@@ -435,3 +437,36 @@ class PollPartyResultCandidateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Poll
         fields = ["poll_name", "poll_category", "poll_votes"]
+
+
+class PollStatusCountSerializer(serializers.ModelSerializer):
+    scheduledPolls = serializers.SerializerMethodField(read_only=True)
+    ongoingPolls = serializers.SerializerMethodField(read_only=True)
+    concludedPolls = serializers.SerializerMethodField(read_only=True)
+    allUsers = serializers.SerializerMethodField(read_only=True)
+    newUsers = serializers.SerializerMethodField(read_only=True)
+
+
+    class Meta:
+        model = PollCategory
+        fields = ['scheduledPolls', 'ongoingPolls', 'concludedPolls', 'allUsers', 'newUsers']
+
+    def get_scheduledPolls(self, obj):
+        upcoming = Poll.objects.filter(poll_startDate__date__gt = date.today()).count()
+        return upcoming
+
+    def get_concludedPolls(self, obj):
+        concluded = Poll.objects.filter(poll_endDate__date__lt = date.today()).count()
+        return concluded
+
+    def get_ongoingPolls(self,obj):
+        ongoing = Poll.objects.filter(poll_startDate__date__lte = date.today(), poll_endDate__date__gte = date.today()).count()
+        return ongoing
+    
+    def get_allUsers(self,obj):
+        voter = Voter.objects.all().count()
+        return voter
+
+    def get_newUsers(self,obj):
+        voter = Voter.objects.filter(date_reg__date = date.today()).count()
+        return voter

@@ -64,9 +64,11 @@ class ContactSerializer(serializers.ModelSerializer):
     class Meta:
         model = Contact
         fields = [
+            'id',
             'name',
             'message',
-            'email'
+            'email',
+            'created_date'
         ]
 
 
@@ -77,7 +79,8 @@ class SubscriberSerializer(serializers.ModelSerializer):
         model = Subscriber
         fields = [
             'id',
-            'email'
+            'email',
+            'created_date'
         ]
 
 class PartySerializer(serializers.ModelSerializer):

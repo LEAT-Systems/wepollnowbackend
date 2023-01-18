@@ -68,12 +68,14 @@ class Contact(models.Model):
     name = models.CharField(max_length=30)
     message = models.CharField(max_length=300)
     email = models.CharField(max_length=40)
+    created_date = models.DateTimeField(auto_now_add='True')
     
     def __str__(self):
         return self.name
 
 class Subscriber(models.Model):
     email = models.CharField(max_length=40)
+    created_date = models.DateTimeField(auto_now_add='True')
     
     def __str__(self):
         return self.email

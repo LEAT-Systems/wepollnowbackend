@@ -64,7 +64,7 @@ class PollCategoryList(ListAPIView):
 class CandidatesList(ListAPIView):
     serializer_class = CandidateSerializer
     queryset = Candidate.objects.all()
-    pagination_class = CustomPagination
+    #pagination_class = CustomPagination
 
 class Polls(CreateAPIView):
     serializer_class = CreatePollSerializer
@@ -88,7 +88,7 @@ class PollRetrieveUpdateDelete(GenericAPIView, mixins.RetrieveModelMixin, mixins
 class AllPollsList(ListAPIView):
     serializer_class = PollSerializer
     queryset = Poll.objects.all()
-    pagination_class = CustomPagination 
+    #pagination_class = CustomPagination 
 
 class GetPollsForVoters(APIView):
     serializer_class = PollSerializer
@@ -175,14 +175,14 @@ class GetPartiesAndCandidatesForPollCategory(APIView):
 
 class PollResult(APIView):
     serializer_class  = PollPartyResultSerializer
-    pagination_class = CustomPagination
+    #pagination_class = CustomPagination
 
 
     def post(self, request):
         try: 
             poll_id = self.request.data["poll_id"]
             pollParties = Party.objects.filter(poll_parties__id=poll_id).prefetch_related('party_votes', 'party_votes_count').annotate(number_of_votes=Count('party_votes')).order_by('-number_of_votes')
-        
+    
             context = {
                 "poll_id" : poll_id
             }
@@ -211,7 +211,7 @@ class PollResult(APIView):
 class PollResultFilter(GenericAPIView):
     serializer_class  = PollPartyResultFilterSerializer
     filter_backends = [ OrderingFilter]
-    pagination_class = CustomPagination
+    #pagination_class = CustomPagination
     #filter_class = PartyVoteFilters
     #ordering_fields = ('name')
     ordering = ('-id')
@@ -256,9 +256,7 @@ class PollResultFilter(GenericAPIView):
 class PollDetailResultView(ListAPIView):
     serializer_class = PollPartyResultCandidateSerializer
     queryset = Poll.objects.all()
-    pagination_class = CustomPagination
-
-
+    #pagination_class = CustomPagination
 
     def get_serializer_context(self):
         context = super().get_serializer_context()
@@ -268,6 +266,14 @@ class PollDetailResultView(ListAPIView):
     def get_object(self):
         poll = Poll.objects.get(id=self.kwargs['pk'])
         return poll
+
+
+class PollStatusCountView(ListAPIView):
+    serializer_class = PollStatusCountSerializer
+    queryset = PollCategory.objects.filter(id=1)
+
+
+
 
 
           

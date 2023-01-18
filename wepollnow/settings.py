@@ -13,7 +13,7 @@ import os
 from pathlib import Path
 from datetime import timedelta
 from decouple import config
-
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -121,6 +121,17 @@ WSGI_APPLICATION = 'wepollnow.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'wepollnow_db',
+#         'USER': 'stan',
+#         'PASSWORD': 'stan@123',
+#         'HOST': '127.0.0.1',
+#         'PORT': '5432'
+#     }
+# }
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -128,6 +139,7 @@ DATABASES = {
     }
 }
 
+DATABASES['default'] = dj_database_url.parse('postgresql://postgres:NB3dhoNrxaBDZiuCYnPy@containers-us-west-58.railway.app:6890/railway')
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
