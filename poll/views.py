@@ -230,6 +230,7 @@ class PollResultFilter(GenericAPIView):
         marital_status = self.request.data.get("marital_status", None)
         employment_status = self.request.data.get("employment_status", None)
         property_status = self.request.data.get("property_status", None)
+        country = self.request.data.get("country", None)
 
 
         pollParties = Party.objects.filter(poll_parties__id=poll_id).prefetch_related('poll_parties', 'party_votes') #.order_by('name')
@@ -246,7 +247,8 @@ class PollResultFilter(GenericAPIView):
             "religion": religion,
             "marital_status": marital_status,
             "employment_status": employment_status,
-            "property_status" :property_status
+            "property_status" :property_status,
+            "country": country
         }
 
         serializer = self.serializer_class(pollParties, many=True, context = context)

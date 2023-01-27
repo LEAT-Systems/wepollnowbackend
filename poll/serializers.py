@@ -350,6 +350,7 @@ class PollPartyResultFilterSerializer(serializers.ModelSerializer):
         marital_status = self.context.get("marital_status", None)
         employment_status = self.context.get("employment_status", None)
         property_status = self.context.get("property_status", None)
+        country = self.context.get("country", None)
 
         vote_count = obj.party_votes.filter(poll__id=poll_id)
         if gender:
@@ -372,8 +373,13 @@ class PollPartyResultFilterSerializer(serializers.ModelSerializer):
             vote_count = vote_count.filter(voter__employment_status=employment_status)
         if marital_status:
             vote_count = vote_count.filter(voter__marital_status=marital_status)
+        
+        if country:
+            vote_count = vote_count.filter(voter__country=country)
+        
         if property_status:
             vote_count = vote_count.filter(voter__property_status=property_status)
+
         return vote_count.count()
 
 
